@@ -18,8 +18,8 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
-    /*public MemberDto createMember(CreateMemberDto createMemberDto) throws IllegalArgumentException{
+    public MemberDto createMember(CreateMemberDto createMemberDto) throws IllegalArgumentException{
         Member member = new Member(createMemberDto.getName(), createMemberDto.getSurname(), createMemberDto.getEmail(), Role.MEMBER, createMemberDto.getPassword(), createMemberDto.getINSS(), createMemberDto.getStreet(), createMemberDto.getHousenumber(), createMemberDto.getCity());
         return userMapper.toDto(member);
-    }*/
+    }
 }
