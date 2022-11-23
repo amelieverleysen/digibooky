@@ -26,9 +26,11 @@ public class UserRepository {
         return Optional.ofNullable(userMap.get(username));
     }
 
-    public Member save(Member member) {
+    public Member save(Member member) throws IllegalArgumentException{
         if (userMap.containsValue(member)) throw new IllegalArgumentException(member.getName() + " " + member.getSurname() + " already exists.");
         userMap.put(member.getId(), member);
         return member;
     }
+
+
 }
