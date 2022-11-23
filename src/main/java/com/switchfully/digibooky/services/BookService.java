@@ -5,8 +5,8 @@ import com.switchfully.digibooky.domain.repositories.BookRepository;
 import com.switchfully.digibooky.services.mappers.BookMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class BookService {
@@ -18,4 +18,10 @@ public class BookService {
         this.bookMapper = bookMapper;
     }
     public List<BookDto> getAllBooks(){return bookMapper.toDto(bookRepository.getAllBooks());}
+
+    public BookDto getBookById(String id) throws NoSuchElementException{
+        return bookMapper.toDto(bookRepository
+                .getBookById(id)
+                .orElseThrow(() -> new NoSuchElementException("No book with id: " + id + " in our book database.")));
+    }
 }
