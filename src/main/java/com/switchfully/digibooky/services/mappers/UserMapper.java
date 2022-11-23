@@ -15,6 +15,7 @@ public class UserMapper {
                 .setName(member.getName())
                 .setSurname(member.getSurname())
                 .setEmail(member.getEmail())
+                .setINSS(member.getInss())
                 .setStreet(member.getStreet())
                 .setHousenumber(member.getHousenumber())
                 .setCity(member.getCity());
