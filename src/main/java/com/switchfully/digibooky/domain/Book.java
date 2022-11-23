@@ -12,6 +12,12 @@ public class Book extends LibraryItem {
         this.author = author;
     }
 
+    public Book(String id, String title, String description, String isbn, String author) {
+        super(id, title, description);
+        this.isbn = isbn;
+        this.author = author;
+    }
+
     public String getIsbn() {
         return isbn;
     }
