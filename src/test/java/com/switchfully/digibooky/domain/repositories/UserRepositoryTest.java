@@ -1,20 +1,14 @@
 package com.switchfully.digibooky.domain.repositories;
 
-import com.google.common.collect.ImmutableMap;
-import com.switchfully.digibooky.api.dtos.CreateMemberDto;
 import com.switchfully.digibooky.domain.City;
 import com.switchfully.digibooky.domain.Member;
 import com.switchfully.digibooky.domain.User;
 import com.switchfully.digibooky.domain.security.Role;
-import com.switchfully.digibooky.services.UserService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class UserRepositoryTest {
 
