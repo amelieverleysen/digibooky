@@ -1,5 +1,6 @@
 package com.switchfully.digibooky.api;
 
+import com.switchfully.digibooky.api.dtos.MemberDto;
 import com.switchfully.digibooky.domain.Member;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.Test;
@@ -14,9 +15,12 @@ class UserControllerTest {
     int port;
 
     @Test
+    //DEZE TEST WERKT NIET!
     void createMember(){
-        Member testMember=
+        MemberDto result=
                 RestAssured.given().port(port)
-                        .when().put("/testMember")
+                        .when().post("/members")
+                        .then().statusCode(201).and().extract().as(MemberDto.class);
+
     }
 }
