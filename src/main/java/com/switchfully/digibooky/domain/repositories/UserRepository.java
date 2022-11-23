@@ -1,6 +1,5 @@
 package com.switchfully.digibooky.domain.repositories;
 
-import com.google.common.collect.ImmutableMap;
 import com.switchfully.digibooky.domain.City;
 import com.switchfully.digibooky.domain.Member;
 import com.switchfully.digibooky.domain.User;
@@ -8,7 +7,6 @@ import com.switchfully.digibooky.domain.security.Role;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -28,6 +26,9 @@ public class UserRepository {
 
     public Member save(Member member) throws IllegalArgumentException{
         if (userMap.containsValue(member)) throw new IllegalArgumentException(member.getName() + " " + member.getSurname() + " already exists.");
+        for (Map.Entry<String, User> entry : userMap.entrySet()) {
+            if (entry.getValue().getEmail().equals(member.getEmail())) throw new IllegalArgumentException("This emailadress already exists.");
+        }
         userMap.put(member.getId(), member);
         return member;
     }

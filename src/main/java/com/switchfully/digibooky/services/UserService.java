@@ -19,14 +19,37 @@ public class UserService {
     }
 
     public MemberDto createMember(CreateMemberDto createMemberDto) throws IllegalArgumentException{
+        String error = validateInput(createMemberDto);
+        if (!error.isEmpty()) throw new IllegalArgumentException("Following fields are invalid: " + error);
+
         Member member = new Member(createMemberDto.getName(), createMemberDto.getSurname(), createMemberDto.getEmail(), Role.MEMBER, createMemberDto.getPassword(), createMemberDto.getINSS(), createMemberDto.getStreet(), createMemberDto.getHousenumber(), createMemberDto.getCity());
+
         return userMapper.toDTO(userRepository.save(member));
     }
 
-    public boolean checkMail(String mail){
-        return true;
-    }
-    public boolean checkINSS(String INSS){
-        return true;
+    public String validateInput(CreateMemberDto createMemberDto){
+        String result="";
+        if (createMemberDto.getName().isEmpty()){
+            result+= " name ";
+        }
+        if (createMemberDto.getSurname().isEmpty()){
+            result+= " surname ";
+        }
+        if (!Helper.checkMail(createMemberDto.getEmail())){
+            result+= " email ";
+        }
+        if (createMemberDto.getPassword().isEmpty()){
+            result+= " password ";
+        }
+        if (createMemberDto.getINSS().isEmpty()){
+            result+= " INSS ";
+        }
+        if (createMemberDto.getStreet().isEmpty()){
+            result+= " street ";
+        }
+        if (createMemberDto.getCity() == null){
+            result+= " city ";
+        }
+        return result;
     }
 }
