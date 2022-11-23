@@ -1,5 +1,6 @@
 package com.switchfully.digibooky.domain;
 
+import com.switchfully.digibooky.domain.security.Feature;
 import com.switchfully.digibooky.domain.security.Role;
 
 import java.util.Objects;
@@ -64,15 +65,12 @@ public class User {
         return Objects.hash(name, surname, email);
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", email='" + email + '\'' +
-                ", role=" + role +
-                ", password='" + password + '\'' +
-                '}';
+
+    public boolean doesPasswordMatch(String password) {
+        return this.password.equals(password);
+    }
+
+    public boolean hasAccessTo(Feature feature) {
+        return this.role.hasFeature(feature);
     }
 }

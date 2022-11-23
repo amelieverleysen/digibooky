@@ -3,7 +3,7 @@ package com.switchfully.digibooky.domain.security;
 import java.util.List;
 
 public enum Role {
-    MEMBER(), LIBRARIAN(), ADMIN(Feature.GET_ALL_MEMBERS);
+    MEMBER(), LIBRARIAN(), ADMIN(Feature.CREATE_LIBRARIAN);
 
     private List<Feature> features;
 
