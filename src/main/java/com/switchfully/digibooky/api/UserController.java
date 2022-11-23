@@ -1,7 +1,9 @@
 package com.switchfully.digibooky.api;
 
+import com.switchfully.digibooky.api.dtos.CreateUserDto;
 import com.switchfully.digibooky.api.dtos.CreateMemberDto;
 import com.switchfully.digibooky.api.dtos.MemberDto;
+import com.switchfully.digibooky.api.dtos.UserDto;
 import com.switchfully.digibooky.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,5 +25,10 @@ public class UserController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public MemberDto createMember(@RequestBody CreateMemberDto createMemberDto) {
         return userService.createMember(createMemberDto);
+    }
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public UserDto createLibrarian(@RequestBody CreateUserDto createUserDto) {
+        return userService.createUser(createUserDto);
     }
 }

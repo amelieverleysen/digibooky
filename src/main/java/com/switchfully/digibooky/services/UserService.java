@@ -1,7 +1,9 @@
 package com.switchfully.digibooky.services;
 
 import com.switchfully.digibooky.api.dtos.CreateMemberDto;
+import com.switchfully.digibooky.api.dtos.CreateUserDto;
 import com.switchfully.digibooky.api.dtos.MemberDto;
+import com.switchfully.digibooky.api.dtos.UserDto;
 import com.switchfully.digibooky.domain.Member;
 import com.switchfully.digibooky.domain.repositories.UserRepository;
 import com.switchfully.digibooky.domain.security.Role;
@@ -22,7 +24,7 @@ public class UserService {
     }
 
     public MemberDto createMember(CreateMemberDto createMemberDto) throws IllegalArgumentException{
-        String error = validateInput(createMemberDto);
+        String error = validateMemberInput(createMemberDto);
         if (!error.isEmpty()) throw new IllegalArgumentException("Following fields are invalid: " + error);
 
         Member member = new Member(createMemberDto.getName(), createMemberDto.getSurname(), createMemberDto.getEmail(), Role.MEMBER, createMemberDto.getPassword(), createMemberDto.getINSS(), createMemberDto.getStreet(), createMemberDto.getHousenumber(), createMemberDto.getCity());
@@ -30,7 +32,11 @@ public class UserService {
         return userMapper.toDTO(userRepository.save(member));
     }
 
-    public String validateInput(CreateMemberDto createMemberDto){
+    public UserDto createUser(CreateUserDto createUserDto) {
+        return null;
+    }
+
+    public String validateMemberInput(CreateMemberDto createMemberDto){
         String result="";
         if (createMemberDto.getName().isEmpty()){
             result+= " name ";
@@ -52,6 +58,23 @@ public class UserService {
         }
         if (createMemberDto.getCity() == null){
             result+= " city ";
+        }
+        return result;
+    }
+
+    public String validateuserrInput(CreateUserDto createUserDto){
+        String result="";
+        if (createUserDto.getName().isEmpty()){
+            result+= " name ";
+        }
+        if (createUserDto.getSurname().isEmpty()){
+            result+= " surname ";
+        }
+        if (!Helper.checkMail(createUserDto.getEmail())){
+            result+= " email ";
+        }
+        if (createUserDto.getPassword().isEmpty()){
+            result+= " password ";
         }
         return result;
     }
