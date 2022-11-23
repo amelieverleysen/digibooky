@@ -11,9 +11,9 @@ public class BookRepository {
     private final List<Book> books = new ArrayList<>();
 
     public BookRepository() {
-        books.add(new Book("The Lord Of The Rings", "Something with wizards and hobits.", "34061689", "JRR Tolkien"));
-        books.add(new Book("Mathilda", "Something with a little girl and telepathy", "3454153168", "Roald Dahl"));
-        books.add(new Book("1984","Big Brother is watching.","468435468","George Orwell"));
+        books.add(new Book("1234","The Lord Of The Rings: The Return Of The King", "Something with wizards and hobits.", "9780395647400", "JRR Tolkien"));
+        books.add(new Book("1235","Mathilda", "Something with a little girl and telepathy", "9780435123987", "Roald Dahl"));
+        books.add(new Book("1236","1984","Big Brother is watching.","9780151660346","George Orwell"));
 
     }
 
