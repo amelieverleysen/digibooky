@@ -14,7 +14,10 @@ public class UserMapper {
                 .setId(member.getId())
                 .setName(member.getName())
                 .setSurname(member.getSurname())
-                .setEmail(member.getEmail());
+                .setEmail(member.getEmail())
+                .setStreet(member.getStreet())
+                .setHousenumber(member.getHousenumber())
+                .setCity(member.getCity());
     }
 
     public List<MemberDto> toDTO(List<Member> professors) {

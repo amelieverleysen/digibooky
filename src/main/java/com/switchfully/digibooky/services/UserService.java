@@ -20,6 +20,13 @@ public class UserService {
 
     public MemberDto createMember(CreateMemberDto createMemberDto) throws IllegalArgumentException{
         Member member = new Member(createMemberDto.getName(), createMemberDto.getSurname(), createMemberDto.getEmail(), Role.MEMBER, createMemberDto.getPassword(), createMemberDto.getINSS(), createMemberDto.getStreet(), createMemberDto.getHousenumber(), createMemberDto.getCity());
-        return userMapper.toDto(member);
+        return userMapper.toDTO(userRepository.save(member));
+    }
+
+    public boolean checkMail(String mail){
+        return true;
+    }
+    public boolean checkINSS(String INSS){
+        return true;
     }
 }
