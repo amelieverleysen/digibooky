@@ -26,9 +26,12 @@ public class UserRepository {
 
     public Member save(Member member) throws IllegalArgumentException{
         if (userMap.containsValue(member)) throw new IllegalArgumentException(member.getName() + " " + member.getSurname() + " already exists.");
-/*        for (Map.Entry<String, User> entry : userMap.entrySet()) {
-            if (entry.getValue().getEmail().equals(member.getEmail())) throw new IllegalArgumentException("This emailadress already exists.");
-        }*/
+
+        for (Map.Entry<String, User> entry : userMap.entrySet()) {
+            if (entry.getValue().getEmail().equals(member.getEmail())) throw new IllegalArgumentException("This email adress already exists.");
+            if (entry.getValue() instanceof Member && ((Member) entry.getValue()).getInss().equals(member.getInss())) throw new IllegalArgumentException("This inss already exists.");
+        }
+
         userMap.put(member.getId(), member);
         return member;
     }

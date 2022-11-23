@@ -23,7 +23,11 @@ public class User {
     }
 
     public User(String id, String name, String surname, String email, Role role, String password) {
-        new User(name, surname, email, role, password);
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.role = role;
+        this.password = password;
         this.id = id;
     }
 
@@ -58,5 +62,17 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(name, surname, email);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                ", role=" + role +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

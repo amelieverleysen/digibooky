@@ -8,10 +8,13 @@ import com.switchfully.digibooky.domain.security.Role;
 import com.switchfully.digibooky.services.mappers.UserMapper;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
+
 @Service
 public class UserService {
     UserRepository userRepository;
     UserMapper userMapper;
+    private UserService x;
 
     public UserService(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;

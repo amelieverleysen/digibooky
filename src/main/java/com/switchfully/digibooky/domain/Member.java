@@ -2,6 +2,7 @@ package com.switchfully.digibooky.domain;
 
 import com.switchfully.digibooky.domain.security.Role;
 
+import java.util.Map;
 import java.util.Objects;
 
 public class Member extends User {
@@ -25,6 +26,7 @@ public class Member extends User {
         this.housenumber = housenumber;
         this.city = city;
     }
+
 
     public String getInss() {
         return Inss;
@@ -55,4 +57,5 @@ public class Member extends User {
     public int hashCode() {
         return Objects.hash(super.hashCode(), Inss, street, housenumber, city);
     }
+
 }
