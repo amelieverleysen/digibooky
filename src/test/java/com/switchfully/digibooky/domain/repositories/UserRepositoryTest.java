@@ -71,6 +71,34 @@ class UserRepositoryTest {
         void initTestData(){
             userToSave = new User("Test", "Tester", "test@gmail.com", Role.MEMBER, "pwd");
         }
-    }
+        @Test
+        void whenCreateNewLibrarian_userIsAddedToRepository() {
+            //GIVEN WHEN
+            User savedUser = userRepository.save(userToSave);
 
+            //THEN
+            Assertions.assertEquals(userToSave, savedUser);
+        }
+
+        @Test
+        void whenANewUserThatAllreadyExists_thenExceptionThrowsIlligalArgument() {
+            //GIVEN WHEN
+            User savedUser = userRepository.save(userToSave);
+
+            //THEN
+            Throwable exception = assertThrows(IllegalArgumentException.class, ()->userRepository.save(userToSave));
+            Assertions.assertEquals(savedUser.getName()+ " " + savedUser.getSurname() + " already exists.", exception.getMessage());
+        }
+
+        @Test
+        void whenAEmailAllreadyExists_thenExceptionThrowsIlligalArgument() {
+            //GIVEN WHEN
+            User savedUser = userRepository.save(userToSave);
+            User userEmail = new User("Emailnaam", "Tester", "test@gmail.com", Role.LIBRARIAN, "pwd");
+
+            //THEN
+            Throwable exception = assertThrows(IllegalArgumentException.class, ()->userRepository.save(userEmail));
+            Assertions.assertEquals("This email adress already exists.", exception.getMessage());
+        }
+    }
 }
