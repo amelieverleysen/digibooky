@@ -32,10 +32,11 @@ public class UserController {
         return userService.createMember(createMemberDto);
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "test", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto createLibrarian(@RequestBody CreateUserDto createUserDto, @RequestHeader String authorization) {
         securityService.validateAuthorisation(authorization, Feature.CREATE_LIBRARIAN);
-        return userService.createUser(createUserDto);
+        return new UserDto();
+        //return userService.createUser(createUserDto);
     }
 }
