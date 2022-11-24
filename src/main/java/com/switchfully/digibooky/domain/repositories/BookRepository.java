@@ -14,8 +14,8 @@ public class BookRepository {
 
     public BookRepository() {
         books.add(new Book("1", "The Lord Of The Rings: The Return Of The King", "Something with wizards and hobits.", "9780395647400", "JRR Tolkien"));
-        books.add(new Book("1", "Mathilda", "Something with a little girl and telepathy", "9780435123987", "Roald Dahl"));
-        books.add(new Book("1", "1984", "Big Brother is watching.", "9780151660346", "George Orwell"));
+        books.add(new Book("2", "Mathilda", "Something with a little girl and telepathy", "9780435123987", "Roald Dahl"));
+        books.add(new Book("3", "1984", "Big Brother is watching.", "9780151660346", "George Orwell"));
     }
 
     public BookRepository(List<Book> booksToAdd){
