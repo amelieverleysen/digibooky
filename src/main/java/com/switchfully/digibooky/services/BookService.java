@@ -13,7 +13,9 @@ import java.util.NoSuchElementException;
 @Service
 public class BookService {
     private final BookRepository bookRepository;
+
     private final BookMapper bookMapper;
+
 
     public BookService(BookRepository bookRepository, BookMapper bookMapper) {
         this.bookRepository = bookRepository;
@@ -81,8 +83,8 @@ public class BookService {
         if (createBookDto.isbn().isEmpty()) {
             result += " isbn ";
         }
-        if (createBookDto.author().isEmpty()) {
-            result += " author ";
+        if (createBookDto.author().getLastname().isEmpty()) {
+            result += " author lastname ";
         }
         return result;
     }
