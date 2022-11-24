@@ -25,16 +25,34 @@ class BookControllerTest {
         List<BookDto> result=
         RestAssured.given().port(port)
                 .when().get("/books")
-                .then().extract().as(new TypeRef<List<BookDto>>(){}) ;
+                .then().statusCode(200).and().extract().as(new TypeRef<List<BookDto>>(){}) ;
         assertEquals(3,result.size());
     }
     @Test
     void getBookById(){
         BookDto result=
                 RestAssured.given().port(port)
-                        .when().get("/books/1234")
+                        .when().get("/books/1")
                         .then().statusCode(200).and().extract().as(BookDto.class);
         assertEquals("The Lord Of The Rings: The Return Of The King",result.title());
+    }
+    @Test
+    void getBookByISBN(){
+        List<BookDto> result=
+                RestAssured.given().port(port)
+                        .when().get("/books?isbn=9780395647400")
+                        .then().statusCode(200).and().extract().as(new TypeRef<List<BookDto>>(){});
+        assertEquals("The Lord Of The Rings: The Return Of The King",result.get(0).title());
+
+    }
+    @Test
+    void getBookByISBNWithRegex(){
+        List<BookDto> result=
+                RestAssured.given().port(port)
+                        .when().get("/books?isbn=9780*")
+                        .then().statusCode(200).and().extract().as(new TypeRef<List<BookDto>>(){});
+        assertEquals(3,result.size());
+
     }
 
 }
