@@ -1,6 +1,7 @@
 package com.switchfully.digibooky.api;
 
 import com.switchfully.digibooky.api.dtos.BookDto;
+import com.switchfully.digibooky.domain.Author;
 import io.restassured.RestAssured;
 import io.restassured.common.mapper.TypeRef;
 import net.minidev.json.JSONObject;
@@ -104,5 +105,38 @@ class BookControllerTest {
         requestParams.put("isbn", "123456789");
         requestParams.put("author", "Tester Testington");
 
+        BookDto result =
+                RestAssured.given().port(port).auth().preemptive().basic("2", "pwd").log().all().contentType("application/json").body(requestParams)
+                        .when().post("/books")
+                        .then().statusCode(201).and().extract().as(BookDto.class);
+        assertEquals("Test", result.title());
     }
+    @Test
+    void updateBookWithOneField(){
+        JSONObject requestParams = new JSONObject();
+        requestParams.put("title", "");
+        requestParams.put("description", "Testing testing");
+        requestParams.put("author", null);
+
+        BookDto result =
+                RestAssured.given().port(port).auth().preemptive().basic("2", "pwd").log().all().contentType("application/json").body(requestParams)
+                        .when().put("/books/1")
+                        .then().statusCode(201).and().extract().as(BookDto.class);
+        assertEquals("Testing testing", result.description());
+    }
+    @Test
+    void updateBookWithAllFields(){
+        JSONObject requestParams = new JSONObject();
+        requestParams.put("title", "Test");
+        requestParams.put("description", "Testing testing");
+        requestParams.put("author", new Author("Tester"," Testington"));
+
+        BookDto result =
+                RestAssured.given().port(port).auth().preemptive().basic("2", "pwd").log().all().contentType("application/json").body(requestParams)
+                        .when().put("/books/1")
+                        .then().statusCode(201).and().extract().as(BookDto.class);
+        assertEquals("Test", result.title());
+
+    }
+
 }

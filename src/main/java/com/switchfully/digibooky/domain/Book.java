@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class Book extends LibraryItem {
     private final String isbn;
-    private final Author author;
+    private Author author;
 
 
     public Book(String title, String description, String isbn, Author author) {
@@ -26,6 +26,10 @@ public class Book extends LibraryItem {
 
     public Author getAuthor() {
         return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
     }
 
     @Override
