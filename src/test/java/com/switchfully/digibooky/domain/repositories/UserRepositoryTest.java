@@ -6,16 +6,13 @@ import com.switchfully.digibooky.domain.User;
 import com.switchfully.digibooky.domain.security.Role;
 import org.junit.jupiter.api.*;
 
-import java.util.Map;
-
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class UserRepositoryTest {
 
-    private UserRepository userRepository = new UserRepository();
+    private final UserRepository userRepository = new UserRepository();
     private Member memberToSave;
     private User userToSave;
-    private Map<String, User> testUserMap;
 
     @Nested
     @DisplayName("Member tests")
