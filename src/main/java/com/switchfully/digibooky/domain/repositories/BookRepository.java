@@ -1,5 +1,6 @@
 package com.switchfully.digibooky.domain.repositories;
 
+import com.switchfully.digibooky.api.dtos.CreateBookDto;
 import com.switchfully.digibooky.domain.Book;
 import org.springframework.stereotype.Repository;
 
@@ -30,5 +31,10 @@ public class BookRepository {
         return books.stream()
                 .filter(book -> book.getId().equals(id))
                 .findFirst();
+    }
+
+    public Book createBook(Book bookToCreate) {
+        books.add(bookToCreate);
+        return bookToCreate;
     }
 }

@@ -1,6 +1,8 @@
 package com.switchfully.digibooky.services;
 
 import com.switchfully.digibooky.api.dtos.BookDto;
+import com.switchfully.digibooky.api.dtos.CreateBookDto;
+import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.domain.repositories.BookRepository;
 import com.switchfully.digibooky.services.mappers.BookMapper;
 import org.springframework.stereotype.Service;
@@ -46,5 +48,29 @@ public class BookService {
         return string
                 .replace("*", ".*")
                 .replace("?", ".?");
+    }
+
+    public BookDto createBook(CreateBookDto createBookDto) {
+        String error = validateInput(createBookDto);
+        if (!error.isEmpty()) throw new IllegalArgumentException("Following fields are invalid: " + error);
+        Book book = new Book(createBookDto.title(), createBookDto.description(), createBookDto.isbn(), createBookDto.author());
+        return bookMapper.toDto(bookRepository.createBook(book));
+    }
+
+    public String validateInput(CreateBookDto createBookDto) {
+        String result = "";
+        if (createBookDto.title().isEmpty()) {
+            result += " title ";
+        }
+        if (createBookDto.description().isEmpty()) {
+            result += " description ";
+        }
+        if (createBookDto.isbn().isEmpty()) {
+            result += " isbn ";
+        }
+        if (createBookDto.author().isEmpty()) {
+            result += " author ";
+        }
+        return result;
     }
 }
