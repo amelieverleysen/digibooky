@@ -46,5 +46,14 @@ class BookRepositoryTest {
             Assertions.assertNull(testBook);
 
         }
+
+        @Test
+        void givenABookRepository_whenCreateBook_thenBookIsAddedToRepository() {
+            BookRepository testRepo = new BookRepository();
+            Book book = new Book("7", "Testbook","Something to test the books", "123456789", "Test");
+
+            testRepo.createBook(book);
+            Assertions.assertEquals(book, testRepo.getBookById("7").orElse(null));
+        }
     }
 }
