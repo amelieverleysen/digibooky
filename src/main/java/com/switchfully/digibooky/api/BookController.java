@@ -5,8 +5,7 @@ import com.switchfully.digibooky.api.dtos.CreateBookDto;
 import com.switchfully.digibooky.domain.security.Feature;
 import com.switchfully.digibooky.services.BookService;
 import com.switchfully.digibooky.services.SecurityService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +17,6 @@ import java.util.List;
 @RequestMapping("/books")
 public class BookController {
 
-    Logger logger = LoggerFactory.getLogger(BookController.class);
     private final BookService bookService;
     private final SecurityService securityService;
 
@@ -30,7 +28,6 @@ public class BookController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<BookDto> getAllBooks() {
-        logger.info("method getAllBooks() is called");
         return bookService.getAllBooks();
     }
 
@@ -40,8 +37,7 @@ public class BookController {
     }
 
     @GetMapping(params = "isbn", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<BookDto> searchBooksByISBN(@RequestParam String isbn){
-        logger.info("method SearchBooksByISBN() is called");
+    public List<BookDto> searchBooksByISBN(@RequestParam String isbn) {
         return bookService.searchBooksByISBN(isbn);
     }
 
@@ -50,5 +46,10 @@ public class BookController {
     public BookDto createBook(@RequestBody CreateBookDto createBookDto, @RequestHeader String authorization) {
        securityService.validateAuthorisation(authorization, Feature.CREATE_BOOK);
         return bookService.createBook(createBookDto);
+    }
+
+    @GetMapping(params = "title", produces = MediaType.APPLICATION_JSON_VALUE)
+    private List<BookDto> searchBookByTitle(@RequestParam String title) {
+        return bookService.searchBooksByTitle(title);
     }
 }

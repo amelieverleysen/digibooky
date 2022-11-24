@@ -44,6 +44,19 @@ public class BookService {
         return booksForGivenIsbn;
     }
 
+    public List<BookDto> searchBooksByTitle(String title) {
+        String regexTitle = convertStringToRegularExpression(title).toLowerCase();
+
+        List<BookDto> booksForGivenTitle = bookMapper.toDto(bookRepository.getAllBooks().stream()
+                .filter(book -> (book.getTitle()).toLowerCase().matches(regexTitle))
+                .toList());
+
+        if (booksForGivenTitle.isEmpty()) {
+            throw new NoSuchElementException("No book(s) matches for given (partial) title.");
+        }
+        return booksForGivenTitle;
+    }
+
     private String convertStringToRegularExpression(String string) {
         return string
                 .replace("*", ".*")
