@@ -34,7 +34,6 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto createLibrarian(@RequestBody CreateUserDto createUserDto, @RequestHeader String authorization) {
         securityService.validateAuthorisation(authorization, Feature.CREATE_LIBRARIAN);
-        return new UserDto();
-        //return userService.createUser(createUserDto);
+        return userService.createLibrarian(createUserDto);
     }
 }

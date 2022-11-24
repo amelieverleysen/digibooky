@@ -41,5 +41,17 @@ public class UserRepository {
         return member;
     }
 
+    public User save(User user) throws  IllegalArgumentException{
+        if (userMap.containsValue(user)) throw new IllegalArgumentException(user.getName() + " " + user.getSurname() + " already exists.");
+
+        for (Map.Entry<String, User> entry : userMap.entrySet()) {
+            if (entry.getValue().getEmail().equals(user.getEmail()))
+                throw new IllegalArgumentException("This email adress already exists.");
+        }
+        userMap.put(user.getId(), user);
+        myLogger.info(user.getName() + " " + user.getSurname() + " is created.");
+        return user;
+    }
+
 
 }

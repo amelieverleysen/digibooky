@@ -5,6 +5,7 @@ import com.switchfully.digibooky.api.dtos.CreateUserDto;
 import com.switchfully.digibooky.api.dtos.MemberDto;
 import com.switchfully.digibooky.api.dtos.UserDto;
 import com.switchfully.digibooky.domain.Member;
+import com.switchfully.digibooky.domain.User;
 import com.switchfully.digibooky.domain.repositories.UserRepository;
 import com.switchfully.digibooky.domain.security.Role;
 import com.switchfully.digibooky.services.mappers.UserMapper;
@@ -21,7 +22,8 @@ public class UserService {
     }
 
     public MemberDto createMember(CreateMemberDto createMemberDto) throws IllegalArgumentException{
-        String error = validateMemberInput(createMemberDto);
+        String error = validateUserInput(new CreateUserDto(createMemberDto.name(), createMemberDto.surname(), createMemberDto.email(), createMemberDto.password()));
+        error += validateMemberInput(createMemberDto);
         if (!error.isEmpty()) throw new IllegalArgumentException("Following fields are invalid: " + error);
 
         Member member = new Member(createMemberDto.name(), createMemberDto.surname(), createMemberDto.email(), Role.MEMBER, createMemberDto.password(), createMemberDto.inss(), createMemberDto.street(), createMemberDto.housenumber(), createMemberDto.city());
@@ -29,24 +31,34 @@ public class UserService {
         return userMapper.toDTO(userRepository.save(member));
     }
 
-    public UserDto createUser(CreateUserDto createUserDto) {
-        return null;
+    public UserDto createLibrarian(CreateUserDto createUserDto) {
+        String error = validateUserInput(createUserDto);
+        if (!error.isEmpty()) throw new IllegalArgumentException("Following fields are invalid: " + error);
+        User user = new User(createUserDto.name(), createUserDto.surname(), createUserDto.email(), Role.LIBRARIAN, createUserDto.password());
+
+        return userMapper.toDTO(userRepository.save(user));
     }
 
-    public String validateMemberInput(CreateMemberDto createMemberDto){
+    public String validateUserInput(CreateUserDto createUserDto){
         String result="";
-        if (createMemberDto.name().isEmpty()){
+        if (createUserDto.name().isEmpty()){
             result+= " name ";
         }
-        if (createMemberDto.surname().isEmpty()){
+        if (createUserDto.surname().isEmpty()){
             result+= " surname ";
         }
-        if (!Helper.checkMail(createMemberDto.email())){
+        if (!Helper.checkMail(createUserDto.email())){
             result+= " email ";
         }
-        if (createMemberDto.password().isEmpty()){
+        if (createUserDto.password().isEmpty()){
             result+= " password ";
         }
+        return result;
+    }
+
+
+    public String validateMemberInput(CreateMemberDto createMemberDto){
+        String result = "";
         if (createMemberDto.inss().isEmpty()){
             result+= " INSS ";
         }
@@ -55,23 +67,6 @@ public class UserService {
         }
         if (createMemberDto.city() == null){
             result+= " city ";
-        }
-        return result;
-    }
-
-    public String validateuserrInput(CreateUserDto createUserDto){
-        String result="";
-        if (createUserDto.getName().isEmpty()){
-            result+= " name ";
-        }
-        if (createUserDto.getSurname().isEmpty()){
-            result+= " surname ";
-        }
-        if (!Helper.checkMail(createUserDto.getEmail())){
-            result+= " email ";
-        }
-        if (createUserDto.getPassword().isEmpty()){
-            result+= " password ";
         }
         return result;
     }
