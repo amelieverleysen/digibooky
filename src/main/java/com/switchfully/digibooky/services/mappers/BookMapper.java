@@ -8,10 +8,13 @@ import java.util.List;
 
 @Component
 public class BookMapper {
-    public BookDto toDto(Book book){
+
+
+    public BookDto toDto(Book book) {
         return new BookDto(book.getTitle(), book.getDescription(), book.getIsbn(), book.getAuthor());
     }
-    public List<BookDto> toDto(List<Book>allBooks){
+
+    public List<BookDto> toDto(List<Book> allBooks) {
         return allBooks.stream()
                 .map(this::toDto)
                 .toList();

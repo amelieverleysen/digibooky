@@ -2,5 +2,5 @@ package com.switchfully.digibooky.api.dtos;
 
 import com.switchfully.digibooky.domain.Author;
 
-public record BookDto(String title, String description, String isbn, Author author) {
+public record UpdateBookDto(String title, String description, Author author) {
 }

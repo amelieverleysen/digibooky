@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public abstract class LibraryItem {
     private final String id;
-    private final String title;
+    private String title;
     private String description;
 
     public LibraryItem(String title, String description) {
@@ -31,6 +31,8 @@ public abstract class LibraryItem {
     public String getDescription() {
         return description;
     }
+
+    public void setTitle(String title) { this.title = title; }
 
     public void setDescription(String description) {
         this.description = description;

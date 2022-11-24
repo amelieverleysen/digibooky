@@ -2,6 +2,7 @@ package com.switchfully.digibooky.services;
 
 import com.switchfully.digibooky.api.dtos.BookDto;
 import com.switchfully.digibooky.api.dtos.CreateBookDto;
+import com.switchfully.digibooky.api.dtos.UpdateBookDto;
 import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.domain.repositories.BookRepository;
 import com.switchfully.digibooky.services.mappers.BookMapper;
@@ -13,7 +14,9 @@ import java.util.NoSuchElementException;
 @Service
 public class BookService {
     private final BookRepository bookRepository;
+
     private final BookMapper bookMapper;
+
 
     public BookService(BookRepository bookRepository, BookMapper bookMapper) {
         this.bookRepository = bookRepository;
@@ -81,9 +84,22 @@ public class BookService {
         if (createBookDto.isbn().isEmpty()) {
             result += " isbn ";
         }
-        if (createBookDto.author().isEmpty()) {
-            result += " author ";
+        if (createBookDto.author().getLastname().isEmpty()) {
+            result += " author lastname ";
         }
         return result;
     }
+
+    public BookDto updateBook(UpdateBookDto updateBookDto, String id) {
+
+        Book book= bookRepository.getBookById(id).orElseThrow(()->new IllegalArgumentException("No book with id: "+id));
+        if(!updateBookDto.title().isEmpty()){
+        book.setTitle(updateBookDto.title());}
+        if(!updateBookDto.description().isEmpty()){
+        book.setDescription(updateBookDto.description());}
+        if(updateBookDto.author() != null){
+        book.setAuthor(updateBookDto.author());}
+        return bookMapper.toDto(book);
+    }
+
 }

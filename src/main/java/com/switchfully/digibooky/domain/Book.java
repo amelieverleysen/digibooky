@@ -4,15 +4,16 @@ import java.util.Objects;
 
 public class Book extends LibraryItem {
     private final String isbn;
-    private final String author;
+    private Author author;
 
-    public Book(String title, String description, String isbn, String author) {
+
+    public Book(String title, String description, String isbn, Author author) {
         super(title, description);
         this.isbn = isbn;
         this.author = author;
     }
 
-    public Book(String id, String title, String description, String isbn, String author) {
+    public Book(String id, String title, String description, String isbn, Author author) {
         super(id, title, description);
         this.isbn = isbn;
         this.author = author;
@@ -22,8 +23,13 @@ public class Book extends LibraryItem {
         return isbn;
     }
 
-    public String getAuthor() {
+
+    public Author getAuthor() {
         return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
     }
 
     @Override
