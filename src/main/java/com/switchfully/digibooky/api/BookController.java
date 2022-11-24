@@ -33,8 +33,8 @@ public class BookController {
     }
 
     @GetMapping(params = "isbn", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<BookDto> SearchBooksByISBN(@RequestParam String isbn){
+    public List<BookDto> searchBooksByISBN(@RequestParam String isbn){
         logger.info("method SearchBooksByISBN() is called");
-        return bookService.SearchBooksByISBN(isbn);
+        return bookService.searchBooksByISBN(isbn);
     }
 }

@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(path = "users")
 public class UserController {
-
-    private final Logger myLogger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
     private final SecurityService securityService;
 
@@ -26,13 +24,13 @@ public class UserController {
         this.securityService = securityService;
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "member", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public MemberDto createMember(@RequestBody CreateMemberDto createMemberDto) {
         return userService.createMember(createMemberDto);
     }
 
-    @PostMapping(path = "test", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "librarian", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto createLibrarian(@RequestBody CreateUserDto createUserDto, @RequestHeader String authorization) {
         securityService.validateAuthorisation(authorization, Feature.CREATE_LIBRARIAN);

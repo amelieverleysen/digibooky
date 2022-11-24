@@ -28,7 +28,7 @@ public class BookService {
                 .orElseThrow(() -> new NoSuchElementException("No book with id: " + id + " in our book database.")));
     }
 
-    public List<BookDto> SearchBooksByISBN(String isbn) throws NoSuchElementException {
+    public List<BookDto> searchBooksByISBN(String isbn) throws NoSuchElementException {
         String regexIsbnWithoutHyphen = convertStringToRegularExpression(isbn
                 .replace("-", ""));
 

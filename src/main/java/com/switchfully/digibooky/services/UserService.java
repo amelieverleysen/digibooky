@@ -10,13 +10,10 @@ import com.switchfully.digibooky.domain.security.Role;
 import com.switchfully.digibooky.services.mappers.UserMapper;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Field;
-
 @Service
 public class UserService {
     UserRepository userRepository;
     UserMapper userMapper;
-    private UserService x;
 
     public UserService(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
@@ -27,7 +24,7 @@ public class UserService {
         String error = validateMemberInput(createMemberDto);
         if (!error.isEmpty()) throw new IllegalArgumentException("Following fields are invalid: " + error);
 
-        Member member = new Member(createMemberDto.getName(), createMemberDto.getSurname(), createMemberDto.getEmail(), Role.MEMBER, createMemberDto.getPassword(), createMemberDto.getINSS(), createMemberDto.getStreet(), createMemberDto.getHousenumber(), createMemberDto.getCity());
+        Member member = new Member(createMemberDto.name(), createMemberDto.surname(), createMemberDto.email(), Role.MEMBER, createMemberDto.password(), createMemberDto.inss(), createMemberDto.street(), createMemberDto.housenumber(), createMemberDto.city());
 
         return userMapper.toDTO(userRepository.save(member));
     }
@@ -38,25 +35,25 @@ public class UserService {
 
     public String validateMemberInput(CreateMemberDto createMemberDto){
         String result="";
-        if (createMemberDto.getName().isEmpty()){
+        if (createMemberDto.name().isEmpty()){
             result+= " name ";
         }
-        if (createMemberDto.getSurname().isEmpty()){
+        if (createMemberDto.surname().isEmpty()){
             result+= " surname ";
         }
-        if (!Helper.checkMail(createMemberDto.getEmail())){
+        if (!Helper.checkMail(createMemberDto.email())){
             result+= " email ";
         }
-        if (createMemberDto.getPassword().isEmpty()){
+        if (createMemberDto.password().isEmpty()){
             result+= " password ";
         }
-        if (createMemberDto.getINSS().isEmpty()){
+        if (createMemberDto.inss().isEmpty()){
             result+= " INSS ";
         }
-        if (createMemberDto.getStreet().isEmpty()){
+        if (createMemberDto.street().isEmpty()){
             result+= " street ";
         }
-        if (createMemberDto.getCity() == null){
+        if (createMemberDto.city() == null){
             result+= " city ";
         }
         return result;

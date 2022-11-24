@@ -1,9 +1,12 @@
 package com.switchfully.digibooky.domain.repositories;
 
+import com.switchfully.digibooky.api.UserController;
 import com.switchfully.digibooky.domain.City;
 import com.switchfully.digibooky.domain.Member;
 import com.switchfully.digibooky.domain.User;
 import com.switchfully.digibooky.domain.security.Role;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -12,16 +15,17 @@ import java.util.Optional;
 
 @Repository
 public class UserRepository {
+    Logger myLogger = LoggerFactory.getLogger(UserController.class);
     private Map<String, User> userMap = new HashMap<>();
 
     public UserRepository() {
-        this.userMap.put("Member", new Member("Member", "Kurt", "Kurtsen", "kurt@gmail.com", Role.MEMBER, "pwd",  "90.02.01-997-04", "Kurtstraaat", "25", new City("2000", "Antwerpen")));
-        this.userMap.put("Librarian", new User("Librarian", "Bob", "Bobbet", "bob@gmail.com", Role.LIBRARIAN, "pwd"));
-        this.userMap.put("Admin", new User("Admin", "Jos", "Josset", "jos@gmail.com", Role.ADMIN, "pwd"));
+        this.userMap.put("1", new Member("Member", "Kurt", "Kurtsen", "kurt@gmail.com", Role.MEMBER, "pwd",  "90.02.01-997-04", "Kurtstraaat", "25", new City("2000", "Antwerpen")));
+        this.userMap.put("2", new User("Librarian", "Bob", "Bobbet", "bob@gmail.com", Role.LIBRARIAN, "pwd"));
+        this.userMap.put("3", new User("Admin", "Jos", "Josset", "jos@gmail.com", Role.ADMIN, "pwd"));
     }
 
-    public Optional<User> getUser(String username) {
-        return Optional.ofNullable(userMap.get(username));
+    public Optional<User> getUserById(String userId) {
+        return Optional.ofNullable(userMap.get(userId));
     }
 
     public Member save(Member member) throws IllegalArgumentException{
@@ -33,6 +37,7 @@ public class UserRepository {
         }
 
         userMap.put(member.getId(), member);
+        myLogger.info(member.getName() + " " + member.getSurname() + " is created.");
         return member;
     }
 
