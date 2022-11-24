@@ -15,8 +15,8 @@ import java.util.Base64;
 
 @Service
 public class SecurityService {
-    private Logger logger = LoggerFactory.getLogger(SecurityService.class);
-    private UserRepository repository;
+    private final Logger logger = LoggerFactory.getLogger(SecurityService.class);
+    private final UserRepository repository;
 
     public SecurityService(UserRepository repository) {
         this.repository = repository;
