@@ -28,7 +28,7 @@ public class BookRepository {
         List<Book> notDeletedBooks = new ArrayList<>();
 
         for (Book book : books) {
-            if (!book.isDeleted()) {
+            if (!book.getIsDeleted()) {
 
                 notDeletedBooks.add(book);
             }
@@ -37,6 +37,14 @@ public class BookRepository {
     }
 
     public Optional<Book> getBookById(String id) {
+
+        return getAllBooks().stream()
+                .filter(book -> book.getId().equals(id))
+                .findFirst();
+    }
+
+    public Optional<Book> getBookByIdLibrarian(String id) {
+
         return books.stream()
                 .filter(book -> book.getId().equals(id))
                 .findFirst();
@@ -45,6 +53,10 @@ public class BookRepository {
     public Book createBook(Book bookToCreate) {
         books.add(bookToCreate);
         return bookToCreate;
+    }
+
+    public Optional<Book> deleteBook(String id) {
+        return getBookByIdLibrarian(id);
     }
 }
 

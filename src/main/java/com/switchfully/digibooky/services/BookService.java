@@ -124,7 +124,8 @@ public class BookService {
         }
         return result;
     }
-    public BookDto deleteBook(DeleteBookDto deleteBookDto){
-        bookRepository.getBookById(deleteBookDto.id())
+    public DeleteBookDto deleteBook(DeleteBookDto deleteBookDto){
+        bookRepository.deleteBook(deleteBookDto.id()).orElseThrow(() -> new IllegalArgumentException("Book is already deleted or doesn't exist")).setDeleted(true);
+        return deleteBookDto;
     }
 }

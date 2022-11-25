@@ -34,7 +34,11 @@ public abstract class LibraryItem {
         return description;
     }
 
-    public boolean isDeleted() { return isDeleted;  }
+    public boolean getIsDeleted() { return isDeleted;  }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
 
     public void setTitle(String title) { this.title = title; }
 

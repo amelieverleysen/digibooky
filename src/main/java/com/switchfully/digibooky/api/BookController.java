@@ -69,8 +69,8 @@ public class BookController {
 
     @DeleteMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public BookDto deleteBook(@RequestBody DeleteBookDto deleteBookDto, @RequestHeader String authorization, @PathVariable String id) {
+    public DeleteBookDto deleteBook(@RequestBody DeleteBookDto deleteBookDto, @RequestHeader String authorization) {
         securityService.validateAuthorisation(authorization, Feature.DELETE_BOOK);
-        return bookService.deleteBook(deleteBookDto, id);
+        return bookService.deleteBook(deleteBookDto);
     }
 }
