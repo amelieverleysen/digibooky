@@ -62,6 +62,6 @@ public class BookController {
 
     @GetMapping(params = {"firstname","lastname"}, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<BookDto> searchBookByAuthor(@RequestParam(defaultValue = "*") String firstname, @RequestParam(defaultValue = "*") String lastname ) {
-        return bookService.searchBooksByAuthor(firstname,lastname);
+        return bookService.searchBookByAuthor(firstname,lastname);
     }
 }

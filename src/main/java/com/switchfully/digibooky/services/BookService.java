@@ -60,7 +60,7 @@ public class BookService {
         return booksForGivenTitle;
     }
 
-    public List<BookDto> searchBooksByAuthor(String firstname, String lastname) throws NoSuchElementException {
+    public List<BookDto> searchBookByAuthor(String firstname, String lastname) throws NoSuchElementException {
         String regexFirstname = convertStringToRegularExpression(firstname).toLowerCase();
         String regexLastname = convertStringToRegularExpression(lastname).toLowerCase();
 
