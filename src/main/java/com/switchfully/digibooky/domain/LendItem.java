@@ -23,6 +23,13 @@ public class LendItem {
         this.memberId = memberId;
         this.dueDate = LocalDate.now().plusWeeks(WEEKS_BEFORE_DUE);
     }
+    public LendItem(String id, String itemId, String memberId, LocalDate dueDate) {
+        this.id = id;
+        this.itemId = itemId;
+        this.memberId = memberId;
+        this.dueDate = dueDate;
+    }
+
 
     public String getId() {
         return id;

@@ -20,10 +20,10 @@ public class UserRepository {
     private final Map<String, User> userMap = new HashMap<>();
 
     public UserRepository() {
-        this.userMap.put("1", new Member("Member", "Kurt", "Kurtsen", "kurt@gmail.com", Role.MEMBER, "pwd",  "90.02.01-997-04", "Kurtstraaat", "25", new City("2000", "Antwerpen")));
-        this.userMap.put("2", new User("Librarian", "Bob", "Bobbet", "bob@gmail.com", Role.LIBRARIAN, "pwd"));
-        this.userMap.put("3", new User("Admin", "Jos", "Josset", "jos@gmail.com", Role.ADMIN, "pwd"));
-        this.userMap.put("4", new Member("Member2", "Bert", "Bertsen", "bert@gmail.com", Role.MEMBER, "pwd",  "90.02.01-997-05", "Bertstraaat", "15", new City("2000", "Antwerpen")));
+        this.userMap.put("1", new Member("1", "Kurt", "Kurtsen", "kurt@gmail.com", Role.MEMBER, "pwd",  "90.02.01-997-04", "Kurtstraaat", "25", new City("2000", "Antwerpen")));
+        this.userMap.put("2", new User("2", "Bob", "Bobbet", "bob@gmail.com", Role.LIBRARIAN, "pwd"));
+        this.userMap.put("3", new User("3", "Jos", "Josset", "jos@gmail.com", Role.ADMIN, "pwd"));
+        this.userMap.put("4", new Member("4", "Bert", "Bertsen", "bert@gmail.com", Role.MEMBER, "pwd",  "90.02.01-997-05", "Bertstraaat", "15", new City("2000", "Antwerpen")));
     }
 
     public Optional<User> getUserById(String userId) {

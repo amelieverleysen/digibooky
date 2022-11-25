@@ -1,6 +1,7 @@
 package com.switchfully.digibooky.api;
 
 import com.switchfully.digibooky.api.dtos.LendItemDto;
+import com.switchfully.digibooky.api.dtos.ReturnLibraryItemDto;
 import com.switchfully.digibooky.domain.security.Feature;
 import com.switchfully.digibooky.services.LendingService;
 import com.switchfully.digibooky.services.SecurityService;
@@ -24,5 +25,12 @@ public class LendingController {
     public LendItemDto lendBook(@RequestParam String isbn, @RequestHeader String authorization){
         securityService.validateAuthorisation(authorization, Feature.LEND_ITEM);
         return lendingService.lendBook(isbn, authorization);
+    }
+
+    @PostMapping(path = "book", params = "returnId", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ReturnLibraryItemDto returnBook(@RequestParam String returnId, @RequestHeader String authorization){
+        securityService.validateAuthorisation(authorization, Feature.LEND_ITEM);
+        return lendingService.returnBook(returnId, authorization);
     }
 }

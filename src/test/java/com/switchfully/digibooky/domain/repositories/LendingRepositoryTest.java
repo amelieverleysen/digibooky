@@ -17,5 +17,12 @@ class LendingRepositoryTest {
         Assertions.assertEquals(lendItemToTest, savedLendItem);
     }
 
-
+    @Test
+    void whenRemovingALendingItem_thenReturnTrue() {
+        //GIVEN WHEN
+        LendItem lendItemToTest = new LendItem("999", "100", "200");
+        //THEN
+        Assertions.assertTrue(lendingRepository.removeLendItem(lendItemToTest));
     }
+
+}
