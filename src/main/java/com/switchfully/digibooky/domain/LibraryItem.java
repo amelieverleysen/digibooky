@@ -7,20 +7,20 @@ public abstract class LibraryItem {
     private String title;
     private String description;
     private boolean isLended = false;
-    private boolean isDeleted;
+    private boolean isDeleted = false;
 
     public LibraryItem(String title, String description) {
         this.id = UUID.randomUUID().toString();
         this.title = title;
         this.description = description;
-        this.isDeleted = false;
+
     }
 
     public LibraryItem(String id, String title, String description) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.isDeleted = false;
+
     }
 
     public String getId() {

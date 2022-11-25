@@ -2,9 +2,7 @@ package com.switchfully.digibooky.api;
 
 import com.switchfully.digibooky.api.dtos.BookDto;
 import com.switchfully.digibooky.api.dtos.CreateBookDto;
-import com.switchfully.digibooky.api.dtos.DeleteBookDto;
 import com.switchfully.digibooky.api.dtos.UpdateBookDto;
-import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.domain.security.Feature;
 import com.switchfully.digibooky.services.BookService;
 import com.switchfully.digibooky.services.SecurityService;

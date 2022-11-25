@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -125,6 +126,7 @@ class BookControllerTest {
         requestParams.put("title", "");
         requestParams.put("description", "Testing testing");
         requestParams.put("author", null);
+        requestParams.put("isDeleted", false);
 
         BookDto result =
                 RestAssured.given().port(port).auth().preemptive().basic("2", "pwd").log().all().contentType("application/json").body(requestParams)
@@ -140,6 +142,7 @@ class BookControllerTest {
         requestParams.put("title", "Test");
         requestParams.put("description", "Testing testing");
         requestParams.put("author", new Author("Tester", " Testington"));
+        requestParams.put("isDeleted", false);
 
         BookDto result =
                 RestAssured.given().port(port).auth().preemptive().basic("2", "pwd").log().all().contentType("application/json").body(requestParams)
@@ -155,6 +158,7 @@ class BookControllerTest {
         requestParams.put("title", "");
         requestParams.put("description", "");
         requestParams.put("author", new Author("Tester", ""));
+        requestParams.put("isDeleted", false);
 
         BookDto result =
                 RestAssured.given().port(port).auth().preemptive().basic("2", "pwd").log().all().contentType("application/json").body(requestParams)
@@ -171,6 +175,7 @@ class BookControllerTest {
         requestParams.put("title", "");
         requestParams.put("description", "");
         requestParams.put("author", new Author("", "Testington"));
+        requestParams.put("isDeleted", false);
 
         BookDto result =
                 RestAssured.given().port(port).auth().preemptive().basic("2", "pwd").log().all().contentType("application/json").body(requestParams)
@@ -178,6 +183,52 @@ class BookControllerTest {
                         .then().statusCode(201).and().extract().as(BookDto.class);
 
         assertEquals("Testington", result.author().getLastname());
+    }
+
+    @Test
+    void deleteBook() {
+        BookDto result =
+                RestAssured.given().port(port).auth().preemptive().basic("2", "pwd").log().all().contentType("application/json")
+                        .when().delete("/books/1")
+                        .then().statusCode(202).and().extract().as(BookDto.class);
+
+        assertTrue(result.isDeleted());
+    }
+
+    @Test
+    void whenDeleteBookAndGetAllBooks_thenDeletedBookNotReturned() {
+
+        RestAssured.given().port(port).auth().preemptive().basic("2", "pwd").log().all().contentType("application/json")
+                .when().delete("/books/1")
+                .then().statusCode(202).and().extract().as(BookDto.class);
+
+
+        List<BookDto> result2 =
+                RestAssured.given().port(port)
+                        .when().get("/books")
+                        .then().statusCode(200).and().extract().as(new TypeRef<List<BookDto>>() {
+                        });
+
+        assertEquals(3, result2.size());
+    }
+
+    @Test
+    void whenDeleteBookAndGetBookById_thenDeletedBookNotReturned() {
+
+        RestAssured.given().port(port).auth().preemptive().basic("2", "pwd").log().all().contentType("application/json")
+                .when().delete("/books/1")
+                .then().statusCode(202).and().extract().as(BookDto.class);
+
+
+        Map<String, String> response =
+                RestAssured.given().port(port)
+                        .when().get("/books/1")
+                        .then().statusCode(404).extract().body().as(new TypeRef<Map<String, String>>() {
+                        });
+
+        String ResponseMessage = new JSONObject(response).get("message").toString();
+
+        assertEquals("No book with id: 1 in our book database.", ResponseMessage);
     }
 
     @Test
