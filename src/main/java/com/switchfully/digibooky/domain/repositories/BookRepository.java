@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 public class BookRepository {
@@ -25,15 +26,9 @@ public class BookRepository {
     }
 
     public List<Book> getAllBooks() {
-        List<Book> notDeletedBooks = new ArrayList<>();
-
-        for (Book book : books) {
-            if (!book.getIsDeleted()) {
-
-                notDeletedBooks.add(book);
-            }
-        }
-        return notDeletedBooks;
+        return books.stream()
+                .filter(book -> !book.getIsDeleted())
+                .collect(Collectors.toList());
     }
 
     public Optional<Book> getBookById(String id) {
@@ -44,7 +39,6 @@ public class BookRepository {
     }
 
     public Optional<Book> getBookByIdLibrarian(String id) {
-
         return books.stream()
                 .filter(book -> book.getId().equals(id))
                 .findFirst();
