@@ -84,7 +84,7 @@ public class BookService {
 
     public BookDto updateBook(UpdateBookDto updateBookDto, String id) {
 
-        Book book = bookRepository.getBookById(id).orElseThrow(() -> new IllegalArgumentException("No book with id: " + id));
+        Book book = bookRepository.getBookByIdLibrarian(id).orElseThrow(() -> new IllegalArgumentException("No book with id: " + id));
         if (!updateBookDto.title().isEmpty()) {
             book.setTitle(updateBookDto.title());
         }
@@ -99,6 +99,7 @@ public class BookService {
                 book.setAuthorLastName(updateBookDto.author().getLastname());
             }
         }
+        book.setDeleted(updateBookDto.isDeleted());
         return bookMapper.toDto(book);
     }
 
@@ -124,8 +125,8 @@ public class BookService {
         }
         return result;
     }
-    public DeleteBookDto deleteBook(DeleteBookDto deleteBookDto){
-        bookRepository.deleteBook(deleteBookDto.id()).orElseThrow(() -> new IllegalArgumentException("Book is already deleted or doesn't exist")).setDeleted(true);
-        return deleteBookDto;
+    public BookDto deleteBook(String id){
+        bookRepository.deleteBook(id).orElseThrow(() -> new IllegalArgumentException("Book is already deleted or doesn't exist")).setDeleted(true);
+        return bookMapper.toDto(bookRepository.getBookByIdLibrarian(id).orElseThrow(() -> new IllegalArgumentException("Book doesn't exist")));
     }
 }
