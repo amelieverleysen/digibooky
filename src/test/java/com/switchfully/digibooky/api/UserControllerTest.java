@@ -36,7 +36,7 @@ class UserControllerTest {
                         });
         System.out.println(result.toString());
 
-        assertEquals(3, result.size());
+        assertEquals(2, result.size());
     }
 
     @Test

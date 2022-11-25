@@ -24,9 +24,9 @@ public class SecurityService {
 
     public void validateAuthorisation(String authorization, Feature feature) throws RuntimeException {
         UsernamePassword usernamePassword = getUseramePassword(authorization);
-        User user = repository.getUserById(usernamePassword.username()).orElseThrow(UnknownUserException::new);
+        User user = repository.getUserById(usernamePassword.getUsername()).orElseThrow(UnknownUserException::new);
 
-        if (!user.doesPasswordMatch(usernamePassword.password())) {
+        if (!user.doesPasswordMatch(usernamePassword.getPassword())) {
             logger.info("Wrong password");
             throw new WrongPasswordException();
         }
