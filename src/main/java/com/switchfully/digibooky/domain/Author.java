@@ -1,7 +1,5 @@
 package com.switchfully.digibooky.domain;
 
-import java.util.UUID;
-
 public class Author {
 
     private String firstname;

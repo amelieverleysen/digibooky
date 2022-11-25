@@ -2,7 +2,6 @@ package com.switchfully.digibooky.domain;
 
 import com.switchfully.digibooky.domain.security.Role;
 
-import java.util.Map;
 import java.util.Objects;
 
 public class Member extends User {
