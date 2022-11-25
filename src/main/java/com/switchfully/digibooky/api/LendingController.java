@@ -19,9 +19,9 @@ public class LendingController {
         this.lendingService = lendingService;
     }
 
-    @PostMapping(path = "book/{isbn}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "book", params = "isbn", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public LendItemDto lendBook(@PathVariable String isbn, @RequestHeader String authorization){
+    public LendItemDto lendBook(@RequestParam String isbn, @RequestHeader String authorization){
         securityService.validateAuthorisation(authorization, Feature.LEND_ITEM);
         return lendingService.lendBook(isbn, authorization);
     }
