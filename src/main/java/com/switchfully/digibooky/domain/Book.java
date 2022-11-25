@@ -24,7 +24,11 @@ public class Book extends LibraryItem {
         return author;
     }
 
-    public void setAuthor(Author author) {
-        this.author = author;
+    public void setAuthorFirstName(String firstName) {
+        this.author.setFirstname(firstName);
+    }
+
+    public void setAuthorLastName(String lastName) {
+        this.author.setLastname(lastName);
     }
 }

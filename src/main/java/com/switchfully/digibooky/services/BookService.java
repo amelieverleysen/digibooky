@@ -91,7 +91,12 @@ public class BookService {
             book.setDescription(updateBookDto.description());
         }
         if (updateBookDto.author() != null) {
-            book.setAuthor(updateBookDto.author());
+            if (!updateBookDto.author().getFirstname().isEmpty()) {
+                book.setAuthorFirstName(updateBookDto.author().getFirstname());
+            }
+            if(!updateBookDto.author().getLastname().isEmpty()) {
+                book.setAuthorLastName(updateBookDto.author().getLastname());
+            }
         }
         return bookMapper.toDto(book);
     }
