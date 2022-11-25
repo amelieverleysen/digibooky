@@ -13,8 +13,8 @@ import java.util.NoSuchElementException;
 
 @Service
 public class BookService {
-    private final BookRepository bookRepository;
 
+    private final BookRepository bookRepository;
     private final BookMapper bookMapper;
 
 
@@ -60,10 +60,18 @@ public class BookService {
         return booksForGivenTitle;
     }
 
-    private String convertStringToRegularExpression(String string) {
-        return string
-                .replace("*", ".*")
-                .replace("?", ".?");
+    public List<BookDto> searchBooksByAuthor(String firstname, String lastname) throws NoSuchElementException {
+        String regexFirstname = convertStringToRegularExpression(firstname).toLowerCase();
+        String regexLastname = convertStringToRegularExpression(lastname).toLowerCase();
+
+        List<BookDto> booksForGivenAuthor = bookMapper.toDto(bookRepository.getAllBooks().stream()
+                .filter(book -> ((book.getAuthor()).getFirstname().toLowerCase().matches(regexFirstname))
+                        && (book.getAuthor()).getLastname().toLowerCase().matches(regexLastname))
+                .toList());
+        if (booksForGivenAuthor.isEmpty()) {
+            throw new NoSuchElementException("No book(s) matches for given (partial) authors first- or lastname.");
+        }
+        return booksForGivenAuthor;
     }
 
     public BookDto createBook(CreateBookDto createBookDto) {
@@ -71,6 +79,27 @@ public class BookService {
         if (!error.isEmpty()) throw new IllegalArgumentException("Following fields are invalid: " + error);
         Book book = new Book(createBookDto.title(), createBookDto.description(), createBookDto.isbn(), createBookDto.author());
         return bookMapper.toDto(bookRepository.createBook(book));
+    }
+
+    public BookDto updateBook(UpdateBookDto updateBookDto, String id) {
+
+        Book book = bookRepository.getBookById(id).orElseThrow(() -> new IllegalArgumentException("No book with id: " + id));
+        if (!updateBookDto.title().isEmpty()) {
+            book.setTitle(updateBookDto.title());
+        }
+        if (!updateBookDto.description().isEmpty()) {
+            book.setDescription(updateBookDto.description());
+        }
+        if (updateBookDto.author() != null) {
+            book.setAuthor(updateBookDto.author());
+        }
+        return bookMapper.toDto(book);
+    }
+
+    private String convertStringToRegularExpression(String string) {
+        return string
+                .replace("*", ".*")
+                .replace("?", ".?");
     }
 
     public String validateInput(CreateBookDto createBookDto) {
@@ -89,17 +118,4 @@ public class BookService {
         }
         return result;
     }
-
-    public BookDto updateBook(UpdateBookDto updateBookDto, String id) {
-
-        Book book= bookRepository.getBookById(id).orElseThrow(()->new IllegalArgumentException("No book with id: "+id));
-        if(!updateBookDto.title().isEmpty()){
-        book.setTitle(updateBookDto.title());}
-        if(!updateBookDto.description().isEmpty()){
-        book.setDescription(updateBookDto.description());}
-        if(updateBookDto.author() != null){
-        book.setAuthor(updateBookDto.author());}
-        return bookMapper.toDto(book);
-    }
-
 }

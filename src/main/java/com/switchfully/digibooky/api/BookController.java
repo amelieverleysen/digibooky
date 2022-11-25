@@ -50,7 +50,7 @@ public class BookController {
     }
 
     @GetMapping(params = "title", produces = MediaType.APPLICATION_JSON_VALUE)
-    private List<BookDto> searchBookByTitle(@RequestParam String title) {
+    public List<BookDto> searchBookByTitle(@RequestParam String title) {
         return bookService.searchBooksByTitle(title);
     }
     @PutMapping(path = "/{id}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -58,5 +58,10 @@ public class BookController {
     public BookDto updateBook(@RequestBody UpdateBookDto updateBookDto, @RequestHeader String authorization, @PathVariable String id){
         securityService.validateAuthorisation(authorization, Feature.UPDATE_BOOK);
         return bookService.updateBook(updateBookDto,id);
+    }
+
+    @GetMapping(params = {"firstname","lastname"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<BookDto> searchBookByAuthor(@RequestParam(defaultValue = "*") String firstname, @RequestParam(defaultValue = "*") String lastname ) {
+        return bookService.searchBooksByAuthor(firstname,lastname);
     }
 }

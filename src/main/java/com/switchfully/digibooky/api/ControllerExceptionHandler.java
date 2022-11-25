@@ -30,7 +30,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(NoSuchElementException.class)
     protected void noSuchElementException(NoSuchElementException ex, HttpServletResponse response) throws IOException {
 
-        response.sendError(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+        response.sendError(HttpStatus.NOT_FOUND.value(), ex.getMessage());
     }
 
     @ExceptionHandler(UnauthorizedException.class)
