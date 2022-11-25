@@ -75,6 +75,6 @@ public class UserService {
 
     public List<MemberAdminDto> getAllMembers() {
         return userAdminMapper.toDTO(userRepository.getAllUsers().stream().
-                filter(user -> user.getRole() == Role.MEMBER).map(user -> (Member) user).toList());
+                filter(user -> user.getRole() == Role.MEMBER).map(user -> (Member)user).toList());
     }
 }

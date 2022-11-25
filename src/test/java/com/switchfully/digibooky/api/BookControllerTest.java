@@ -50,22 +50,22 @@ class BookControllerTest {
     void getBookByISBN() {
         List<BookDto> result =
                 RestAssured.given().port(port)
-                        .when().get("/books?isbn=9780395647400")
+                        .when().get("/books?isbn=9780435123987")
                         .then().statusCode(200).and().extract().as(new TypeRef<List<BookDto>>() {
                         });
 
-        assertEquals("The Lord Of The Rings: The Return Of The King", result.get(0).title());
+        assertEquals("Mathilda", result.get(0).title());
     }
 
     @Test
     void getBookByISBNWithRegex() {
         List<BookDto> result =
                 RestAssured.given().port(port)
-                        .when().get("/books?isbn=9780*")
+                        .when().get("/books?isbn=*435123987")
                         .then().statusCode(200).and().extract().as(new TypeRef<List<BookDto>>() {
                         });
 
-        assertEquals(4, result.size());
+        assertEquals("Mathilda", result.get(0).title());
     }
 
     @Test

@@ -6,7 +6,6 @@ import com.switchfully.digibooky.api.dtos.UpdateBookDto;
 import com.switchfully.digibooky.domain.security.Feature;
 import com.switchfully.digibooky.services.BookService;
 import com.switchfully.digibooky.services.SecurityService;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +17,7 @@ import java.util.List;
 @RequestMapping("/books")
 public class BookController {
 
+
     private final BookService bookService;
     private final SecurityService securityService;
 
@@ -28,8 +28,13 @@ public class BookController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<BookDto> getAllBooks() {
-        return bookService.getAllBooks();
+    public List<BookDto> getAllBooks(@RequestHeader(defaultValue = "-1") String authorization) {
+        if (authorization.equals("-1")){
+            return bookService.getAllBooks();
+        }
+        securityService.validateAuthorisation(authorization, Feature.GET_ALL_BOOKS);
+        System.out.println("security");
+        return bookService.getAllBooksWithLoanStatusAndLoaner();
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

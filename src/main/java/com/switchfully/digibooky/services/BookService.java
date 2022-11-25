@@ -27,6 +27,10 @@ public class BookService {
         return bookMapper.toDto(bookRepository.getAllBooks());
     }
 
+    public List<BookDto> getAllBooksWithLoanStatusAndLoaner() {
+        return bookMapper.toDto(bookRepository.getAllBooks());
+    }
+
     public BookDto getBookById(String id) throws NoSuchElementException {
         return bookMapper.toDto(bookRepository
                 .getBookById(id)
