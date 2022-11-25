@@ -152,7 +152,7 @@ class BookControllerTest {
     @Test
     void getBookByAuthor() {
         List<BookDto> result =
-                RestAssured.given().contentType(ContentType.JSON).with().
+                RestAssured.given().port(port).contentType(ContentType.JSON).with().
                         queryParam("firstname", "Roald").
                         queryParam("lastname", "Dahl").
                         when().get("/books").then().statusCode(200).and().extract().as(new TypeRef<List<BookDto>>() {
@@ -164,7 +164,7 @@ class BookControllerTest {
     @Test
     void getBookByAuthorWithRegex() {
         List<BookDto> result =
-                RestAssured.given().contentType(ContentType.JSON).with().
+                RestAssured.given().port(port).contentType(ContentType.JSON).with().
                         queryParam("firstname", "*ald").
                         queryParam("lastname", "Da?l").
                         when().get("/books").then().statusCode(200).and().extract().as(new TypeRef<List<BookDto>>() {
@@ -176,7 +176,7 @@ class BookControllerTest {
     @Test
     void getBookByAuthor_whenNothingIsFound_thenResponseMessageIsReturned() {
         Map<String, String> response =
-                RestAssured.given().contentType(ContentType.JSON).with().
+                RestAssured.given().port(port).contentType(ContentType.JSON).with().
                         queryParam("firstname", "Robert").
                         queryParam("lastname", "Jordan").
                         when().get("/books").then().statusCode(404).and().extract().
