@@ -17,11 +17,11 @@ import java.util.NoSuchElementException;
 
 @Service
 public class LendingService {
-    private String userId;
-    private LendingRepository lendingRepository;
-    private BookRepository bookRepository;
-    private UserRepository userRepository;
-    private LendingMapper lendingMapper;
+    private  String userId;
+    private final LendingRepository lendingRepository;
+    private final BookRepository bookRepository;
+    private final UserRepository userRepository;
+    private final LendingMapper lendingMapper;
 
     public LendingService(LendingRepository lendingRepository, BookRepository bookRepository, UserRepository userRepository, LendingMapper lendingMapper) {
         this.lendingRepository = lendingRepository;

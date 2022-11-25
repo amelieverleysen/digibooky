@@ -6,6 +6,7 @@ public abstract class LibraryItem {
     private final String id;
     private String title;
     private String description;
+    private boolean isLended = false;
     private boolean isDeleted;
 
     public LibraryItem(String title, String description) {
@@ -36,13 +37,15 @@ public abstract class LibraryItem {
 
     public boolean getIsDeleted() { return isDeleted;  }
 
+    public boolean getIsLended() {return isLended;}
+
     public void setDeleted(boolean deleted) {
         isDeleted = deleted;
     }
 
     public void setTitle(String title) { this.title = title; }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    public void setIsLended(boolean newStatus) {this.isLended = newStatus;}
+
+    public void setDescription(String description) {this.description = description;}
 }
