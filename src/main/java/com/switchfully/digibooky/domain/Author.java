@@ -4,8 +4,8 @@ import java.util.UUID;
 
 public class Author {
 
-    private final String firstname;
-    private final String lastname;
+    private String firstname;
+    private String lastname;
 
     public Author(String firstname, String lastname) {
         this.firstname = firstname;
@@ -19,4 +19,14 @@ public class Author {
     public String getLastname() {
         return lastname;
     }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
 }
+
+

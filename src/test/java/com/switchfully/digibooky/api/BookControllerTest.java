@@ -150,6 +150,37 @@ class BookControllerTest {
     }
 
     @Test
+    void updateBookAuthorOnlyFirstName() {
+        JSONObject requestParams = new JSONObject();
+        requestParams.put("title", "");
+        requestParams.put("description", "");
+        requestParams.put("author", new Author("Tester", ""));
+
+        BookDto result =
+                RestAssured.given().port(port).auth().preemptive().basic("2", "pwd").log().all().contentType("application/json").body(requestParams)
+                        .when().put("/books/1")
+                        .then().statusCode(201).and().extract().as(BookDto.class);
+
+
+        assertEquals("Tester", result.author().getFirstname());
+    }
+
+    @Test
+    void updateBookAuthorOnlyLastName() {
+        JSONObject requestParams = new JSONObject();
+        requestParams.put("title", "");
+        requestParams.put("description", "");
+        requestParams.put("author", new Author("", "Testington"));
+
+        BookDto result =
+                RestAssured.given().port(port).auth().preemptive().basic("2", "pwd").log().all().contentType("application/json").body(requestParams)
+                        .when().put("/books/1")
+                        .then().statusCode(201).and().extract().as(BookDto.class);
+
+        assertEquals("Testington", result.author().getLastname());
+    }
+
+    @Test
     void getBookByAuthor() {
         List<BookDto> result =
                 RestAssured.given().port(port).contentType(ContentType.JSON).with().
