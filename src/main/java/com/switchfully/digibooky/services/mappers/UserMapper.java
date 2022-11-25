@@ -6,6 +6,7 @@ import com.switchfully.digibooky.domain.Member;
 import com.switchfully.digibooky.domain.User;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
 

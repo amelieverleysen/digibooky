@@ -2,6 +2,7 @@ package com.switchfully.digibooky.services;
 
 import com.switchfully.digibooky.api.dtos.BookDto;
 import com.switchfully.digibooky.api.dtos.CreateBookDto;
+import com.switchfully.digibooky.api.dtos.DeleteBookDto;
 import com.switchfully.digibooky.api.dtos.UpdateBookDto;
 import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.domain.repositories.BookRepository;
@@ -117,5 +118,8 @@ public class BookService {
             result += " author lastname ";
         }
         return result;
+    }
+    public BookDto deleteBook(DeleteBookDto deleteBookDto){
+        bookRepository.getBookById(deleteBookDto.id())
     }
 }

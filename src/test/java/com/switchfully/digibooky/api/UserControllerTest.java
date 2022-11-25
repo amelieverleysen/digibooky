@@ -3,28 +3,20 @@ package com.switchfully.digibooky.api;
 import com.switchfully.digibooky.api.dtos.MemberDto;
 import com.switchfully.digibooky.api.dtos.UserDto;
 import com.switchfully.digibooky.domain.City;
-import com.switchfully.digibooky.domain.User;
 import com.switchfully.digibooky.domain.repositories.UserRepository;
 import com.switchfully.digibooky.domain.security.Role;
 import io.restassured.RestAssured;
 import net.minidev.json.JSONObject;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
-import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class UserControllerTest {
-
-
-    @Autowired
-    private UserRepository users;
 
     @LocalServerPort
     int port;

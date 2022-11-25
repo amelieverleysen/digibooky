@@ -48,10 +48,6 @@ public class User {
         return email;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -2,6 +2,7 @@ package com.switchfully.digibooky.api;
 
 import com.switchfully.digibooky.api.dtos.BookDto;
 import com.switchfully.digibooky.api.dtos.CreateBookDto;
+import com.switchfully.digibooky.api.dtos.DeleteBookDto;
 import com.switchfully.digibooky.api.dtos.UpdateBookDto;
 import com.switchfully.digibooky.domain.security.Feature;
 import com.switchfully.digibooky.services.BookService;
@@ -45,7 +46,7 @@ public class BookController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public BookDto createBook(@RequestBody CreateBookDto createBookDto, @RequestHeader String authorization) {
-       securityService.validateAuthorisation(authorization, Feature.CREATE_BOOK);
+        securityService.validateAuthorisation(authorization, Feature.CREATE_BOOK);
         return bookService.createBook(createBookDto);
     }
 
@@ -53,15 +54,23 @@ public class BookController {
     public List<BookDto> searchBookByTitle(@RequestParam String title) {
         return bookService.searchBooksByTitle(title);
     }
-    @PutMapping(path = "/{id}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+
+    @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public BookDto updateBook(@RequestBody UpdateBookDto updateBookDto, @RequestHeader String authorization, @PathVariable String id){
+    public BookDto updateBook(@RequestBody UpdateBookDto updateBookDto, @RequestHeader String authorization, @PathVariable String id) {
         securityService.validateAuthorisation(authorization, Feature.UPDATE_BOOK);
-        return bookService.updateBook(updateBookDto,id);
+        return bookService.updateBook(updateBookDto, id);
     }
 
-    @GetMapping(params = {"firstname","lastname"}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<BookDto> searchBookByAuthor(@RequestParam(defaultValue = "*") String firstname, @RequestParam(defaultValue = "*") String lastname ) {
-        return bookService.searchBookByAuthor(firstname,lastname);
+    @GetMapping(params = {"firstname", "lastname"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<BookDto> searchBookByAuthor(@RequestParam(defaultValue = "*") String firstname, @RequestParam(defaultValue = "*") String lastname) {
+        return bookService.searchBookByAuthor(firstname, lastname);
+    }
+
+    @DeleteMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public BookDto deleteBook(@RequestBody DeleteBookDto deleteBookDto, @RequestHeader String authorization, @PathVariable String id) {
+        securityService.validateAuthorisation(authorization, Feature.DELETE_BOOK);
+        return bookService.deleteBook(deleteBookDto, id);
     }
 }

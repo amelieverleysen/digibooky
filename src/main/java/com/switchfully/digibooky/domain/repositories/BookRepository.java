@@ -16,16 +16,24 @@ public class BookRepository {
     public BookRepository() {
         books.add(new Book("1", "The Lord Of The Rings: The Return Of The King", "Something with wizards and hobits.", "9780395647400", new Author("JJR", "Tolkien")));
         books.add(new Book("2", "Mathilda", "Something with a little girl and telepathy", "9780435123987", new Author("Roald", "Dahl")));
-        books.add(new Book("3", "1984", "Big Brother is watching.", "9780151660346", new Author("George","Orwell")));
+        books.add(new Book("3", "1984", "Big Brother is watching.", "9780151660346", new Author("George", "Orwell")));
         books.add(new Book("4", "The Lord Of The Rings: The Two Towers", "Something with even more wizards and hobits and some orks.", "9780395647400", new Author("JJR", "Tolkien")));
     }
 
-    public BookRepository(List<Book> booksToAdd){
+    public BookRepository(List<Book> booksToAdd) {
         books.addAll(booksToAdd);
     }
 
     public List<Book> getAllBooks() {
-        return books;
+        List<Book> notDeletedBooks = new ArrayList<>();
+
+        for (Book book : books) {
+            if (!book.isDeleted()) {
+
+                notDeletedBooks.add(book);
+            }
+        }
+        return notDeletedBooks;
     }
 
     public Optional<Book> getBookById(String id) {
@@ -39,3 +47,4 @@ public class BookRepository {
         return bookToCreate;
     }
 }
+

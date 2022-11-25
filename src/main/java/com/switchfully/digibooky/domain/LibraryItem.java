@@ -6,17 +6,20 @@ public abstract class LibraryItem {
     private final String id;
     private String title;
     private String description;
+    private boolean isDeleted;
 
     public LibraryItem(String title, String description) {
         this.id = UUID.randomUUID().toString();
         this.title = title;
         this.description = description;
+        this.isDeleted = false;
     }
 
     public LibraryItem(String id, String title, String description) {
         this.id = id;
         this.title = title;
         this.description = description;
+        this.isDeleted = false;
     }
 
     public String getId() {
@@ -30,6 +33,8 @@ public abstract class LibraryItem {
     public String getDescription() {
         return description;
     }
+
+    public boolean isDeleted() { return isDeleted;  }
 
     public void setTitle(String title) { this.title = title; }
 
