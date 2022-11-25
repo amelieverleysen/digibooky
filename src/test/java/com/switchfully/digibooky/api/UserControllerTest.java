@@ -10,6 +10,7 @@ import com.switchfully.digibooky.domain.security.Role;
 import io.restassured.RestAssured;
 import io.restassured.common.mapper.TypeRef;
 import net.minidev.json.JSONObject;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -78,5 +79,9 @@ class UserControllerTest {
                         .when().post("/users/librarians")
                         .then().statusCode(201).and().extract().as(UserDto.class);
         assertEquals("test2@test.com", result.email());
+    }
+    @AfterEach
+    void cleanup(){
+        RestAssured.reset();
     }
 }

@@ -160,4 +160,8 @@ class LendingControllerTest {
             assertEquals("Unauthorized", ResponseMessage);
         }
     }
+    @AfterEach
+    void cleanup(){
+        RestAssured.reset();
+    }
 }

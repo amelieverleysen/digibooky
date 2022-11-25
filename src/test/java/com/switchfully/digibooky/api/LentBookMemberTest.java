@@ -6,10 +6,7 @@ import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.domain.repositories.BookRepository;
 import io.restassured.RestAssured;
 import io.restassured.common.mapper.TypeRef;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -51,5 +48,9 @@ public class LentBookMemberTest {
                     });
             Assertions.assertTrue(result.isEmpty());
         }
+    }
+    @AfterEach
+    void cleanup(){
+        RestAssured.reset();
     }
 }

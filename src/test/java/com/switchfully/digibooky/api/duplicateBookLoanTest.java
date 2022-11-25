@@ -79,4 +79,8 @@ public class duplicateBookLoanTest {
             assertEquals("Book with isbn: 100 not found", ResponseMessage);
         }
     }
+    @AfterEach
+    void cleanup(){
+        RestAssured.reset();
+    }
 }
