@@ -99,7 +99,7 @@ class UserRepositoryTest {
 
             //THEN
             Throwable exception = assertThrows(IllegalArgumentException.class, () -> userRepository.save(userEmail));
-            Assertions.assertEquals("This email address already exists.", exception.getMessage());
+            Assertions.assertEquals("This email adress already exists.", exception.getMessage());
         }
     }
 }
