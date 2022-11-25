@@ -1,17 +1,14 @@
 package com.switchfully.digibooky.api;
 
-import com.switchfully.digibooky.api.dtos.CreateUserDto;
-import com.switchfully.digibooky.api.dtos.CreateMemberDto;
-import com.switchfully.digibooky.api.dtos.MemberDto;
-import com.switchfully.digibooky.api.dtos.UserDto;
+import com.switchfully.digibooky.api.dtos.*;
 import com.switchfully.digibooky.domain.security.Feature;
 import com.switchfully.digibooky.services.SecurityService;
 import com.switchfully.digibooky.services.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "users")
@@ -24,16 +21,22 @@ public class UserController {
         this.securityService = securityService;
     }
 
-    @PostMapping(path = "member", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "members", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public MemberDto createMember(@RequestBody CreateMemberDto createMemberDto) {
         return userService.createMember(createMemberDto);
     }
 
-    @PostMapping(path = "librarian", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "librarians", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto createLibrarian(@RequestBody CreateUserDto createUserDto, @RequestHeader String authorization) {
         securityService.validateAuthorisation(authorization, Feature.CREATE_LIBRARIAN);
         return userService.createLibrarian(createUserDto);
+    }
+
+    @GetMapping(path = "members", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<MemberAdminDto> getAllMembers(@RequestHeader String authorization) {
+        securityService.validateAuthorisation(authorization, Feature.GET_ALL_MEMBERS);
+        return userService.getAllMembers();
     }
 }

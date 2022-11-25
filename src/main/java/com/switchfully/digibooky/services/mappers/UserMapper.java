@@ -6,7 +6,6 @@ import com.switchfully.digibooky.domain.Member;
 import com.switchfully.digibooky.domain.User;
 import org.springframework.stereotype.Component;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,5 +32,4 @@ public class UserMapper {
     public <S> List<Object> toDTO(List<S> users) {
         return users.stream().map(this::toDTO).collect(Collectors.toList());
     }
-
 }
