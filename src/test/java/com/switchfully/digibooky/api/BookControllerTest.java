@@ -6,7 +6,6 @@ import io.restassured.RestAssured;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.http.ContentType;
 import net.minidev.json.JSONObject;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -26,7 +25,6 @@ class BookControllerTest {
 
     @LocalServerPort
     int port;
-
 
     @Test
     void getAllBooks() {
@@ -275,7 +273,4 @@ class BookControllerTest {
 
         assertEquals("No book(s) matches for given (partial) authors first- or lastname.", ResponseMessage);
     }
-
-
 }
-
