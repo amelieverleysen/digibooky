@@ -29,4 +29,8 @@ public class LendingRepository {
     public Optional<LendItem> getLendItemById(String returnId) {
         return Optional.ofNullable(lendingMap.get(returnId));
     }
+
+    public Map<String, LendItem> getLendingMap() {
+        return lendingMap;
+    }
 }

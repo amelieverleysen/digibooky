@@ -6,9 +6,11 @@ import io.restassured.RestAssured;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.http.ContentType;
 import net.minidev.json.JSONObject;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.List;
 import java.util.Map;
@@ -18,11 +20,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class BookControllerTest {
 
 
     @LocalServerPort
     int port;
+
 
     @Test
     void getAllBooks() {
@@ -87,7 +91,7 @@ class BookControllerTest {
                         .then().statusCode(200).and().extract().as(new TypeRef<List<BookDto>>() {
                         });
 
-        assertEquals("The Lord Of The Rings: The Two Towers", result.get(0).title());
+        assertEquals("The Lord Of The Rings: The Return Of The King", result.get(0).title());
     }
 
     @Test
@@ -187,12 +191,14 @@ class BookControllerTest {
 
     @Test
     void deleteBook() {
-        BookDto result =
-                RestAssured.given().port(port).auth().preemptive().basic("2", "pwd").log().all().contentType("application/json")
-                        .when().delete("/books/1")
-                        .then().statusCode(202).and().extract().as(BookDto.class);
+        RestAssured.given().port(port).auth().preemptive().basic("2", "pwd")
+                .when().delete("/books/1");
 
-        assertTrue(result.isDeleted());
+
+        RestAssured.given().port(port).auth().preemptive().basic("2", "pwd")
+                .when().get("/books/1")
+                .then().assertThat().statusCode(404);
+
     }
 
     @Test
@@ -269,4 +275,7 @@ class BookControllerTest {
 
         assertEquals("No book(s) matches for given (partial) authors first- or lastname.", ResponseMessage);
     }
+
+
 }
+

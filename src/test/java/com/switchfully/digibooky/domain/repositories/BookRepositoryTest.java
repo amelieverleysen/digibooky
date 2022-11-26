@@ -19,7 +19,7 @@ class BookRepositoryTest {
             List<Book> testBooks = List.of(
                     new Book("1", "The Lord Of The Rings: The Return Of The King", "Something with wizards and hobits.", "9780395647400", new Author("JJR", "Tolkien")),
                     new Book("2", "Mathilda", "Something with a little girl and telepathy", "9780435123987", new Author("Roald", "Dahl")),
-                    new Book("3", "1984", "Big Brother is watching.", "97801516603469", new Author("George","Orwell")));
+                    new Book("3", "1984", "Big Brother is watching.", "97801516603469", new Author("George", "Orwell")));
 
             BookRepository testRepo = new BookRepository(testBooks);
 
@@ -50,7 +50,7 @@ class BookRepositoryTest {
         @Test
         void givenABookRepository_whenCreateBook_thenBookIsAddedToRepository() {
             BookRepository testRepo = new BookRepository();
-            Book book = new Book("7", "Testbook","Something to test the books", "123456789", new Author("JJR", "Tolkien"));
+            Book book = new Book("7", "Testbook", "Something to test the books", "123456789", new Author("JJR", "Tolkien"));
 
             testRepo.createBook(book);
             Assertions.assertEquals(book, testRepo.getBookById("7").orElse(null));

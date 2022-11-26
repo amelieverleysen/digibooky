@@ -17,12 +17,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.NestedTestConfiguration;
 
 import java.time.LocalDate;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 class LendingControllerTest {
     @LocalServerPort
     int port;
@@ -52,6 +55,7 @@ class LendingControllerTest {
     @DisplayName("return test")
     @Nested
     class ReturnTest{
+
         @Test
         void givenAnExistingLend_whenReturningABook_thenResponseIdEquals() {
             bookRepository.createBook(bookTolend);
@@ -219,7 +223,7 @@ class LendingControllerTest {
                             });
 
             String ResponseMessage = new JSONObject(result).get("message").toString();
-            assertEquals("Book with isbn: 100 is not available", ResponseMessage);
+            assertEquals("Book with isbn: 100 not found", ResponseMessage);
         }
     }
 }

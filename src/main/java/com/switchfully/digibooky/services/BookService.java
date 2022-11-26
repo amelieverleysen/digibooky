@@ -4,21 +4,29 @@ import com.switchfully.digibooky.api.dtos.BookDto;
 import com.switchfully.digibooky.api.dtos.CreateBookDto;
 import com.switchfully.digibooky.api.dtos.UpdateBookDto;
 import com.switchfully.digibooky.domain.Book;
+import com.switchfully.digibooky.domain.LendInfoBook;
+import com.switchfully.digibooky.domain.LendItem;
+import com.switchfully.digibooky.domain.User;
 import com.switchfully.digibooky.domain.repositories.BookRepository;
+import com.switchfully.digibooky.domain.repositories.LendingRepository;
+import com.switchfully.digibooky.domain.repositories.UserRepository;
 import com.switchfully.digibooky.services.mappers.BookMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @Service
 public class BookService {
 
+    private final UserRepository userRepository;
+    private final LendingRepository lendingRepository;
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
 
 
-    public BookService(BookRepository bookRepository, BookMapper bookMapper) {
+    public BookService(UserRepository userRepository, LendingRepository lendingRepository, BookRepository bookRepository, BookMapper bookMapper) {
+        this.userRepository = userRepository;
+        this.lendingRepository = lendingRepository;
         this.bookRepository = bookRepository;
         this.bookMapper = bookMapper;
     }
@@ -28,7 +36,29 @@ public class BookService {
     }
 
     public List<BookDto> getAllBooksWithLoanStatusAndLoaner() {
-        return bookMapper.toDto(bookRepository.getAllBooks());
+        List<Book> books = bookRepository.getAllBooks();
+        List<BookDto> booksWithLoanInfo = new ArrayList<>();
+        for (Book book : books) {
+            LendInfoBook loaner = GetLoanerName(book);
+            booksWithLoanInfo.add(bookMapper.toDto(book, loaner));
+        }
+        return booksWithLoanInfo;
+    }
+
+    private LendInfoBook GetLoanerName(Book book) {
+        Map<String, LendItem> lending = lendingRepository.getLendingMap();
+        LendInfoBook loaner = new LendInfoBook(String.valueOf(book.getIsLended()), "", "");
+        for (LendItem lendItem : lending.values()) {
+            if (lendItem.getItemId().equals(book.getId())) {
+                for (User user : userRepository.getAllUsers()) {
+                    if (user.getId().equals(lendItem.getMemberId())) {
+                        loaner.setFirstname(user.getSurname());
+                        loaner.setLastname(user.getName());
+                    }
+                }
+            }
+        }
+        return loaner;
     }
 
     public BookDto getBookById(String id) throws NoSuchElementException {
@@ -98,7 +128,7 @@ public class BookService {
             if (!updateBookDto.author().getFirstname().isEmpty()) {
                 book.setAuthorFirstName(updateBookDto.author().getFirstname());
             }
-            if(!updateBookDto.author().getLastname().isEmpty()) {
+            if (!updateBookDto.author().getLastname().isEmpty()) {
                 book.setAuthorLastName(updateBookDto.author().getLastname());
             }
         }
@@ -128,7 +158,8 @@ public class BookService {
         }
         return result;
     }
-    public BookDto deleteBook(String id){
+
+    public BookDto deleteBook(String id) {
         bookRepository.deleteBook(id).orElseThrow(() -> new IllegalArgumentException("Book is already deleted or doesn't exist")).setDeleted(true);
         return bookMapper.toDto(bookRepository.getBookByIdLibrarian(id).orElseThrow(() -> new IllegalArgumentException("Book doesn't exist")));
     }

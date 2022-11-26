@@ -29,11 +29,10 @@ public class BookController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<BookDto> getAllBooks(@RequestHeader(defaultValue = "-1") String authorization) {
-        if (authorization.equals("-1")){
+        if (authorization.equals("-1")) {
             return bookService.getAllBooks();
         }
         securityService.validateAuthorisation(authorization, Feature.GET_ALL_BOOKS);
-        System.out.println("security");
         return bookService.getAllBooksWithLoanStatusAndLoaner();
     }
 
