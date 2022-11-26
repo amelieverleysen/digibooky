@@ -28,6 +28,12 @@ class BookControllerTest {
 
     @Test
     void getAllBooksAsUser() {
+
+        RestAssured.given().port(port).auth().preemptive().basic("1", "pwd").log().all().contentType("application/json")
+                .with().queryParam("isbn", "9780151660346")
+                .when().post("lending/book").then().statusCode(201);
+
+
         List<BookDto> result =
                 RestAssured.given().port(port)
                         .when().get("/books")
@@ -40,6 +46,10 @@ class BookControllerTest {
 
     @Test
     void getAllBooksAsMember() {
+        RestAssured.given().port(port).auth().preemptive().basic("1", "pwd").log().all().contentType("application/json")
+                .with().queryParam("isbn", "9780151660346")
+                .when().post("lending/book").then().statusCode(201);
+
         List<BookDto> result =
                 RestAssured.given().port(port).auth().preemptive().basic("1", "pwd")
                         .when().get("/books")
@@ -284,8 +294,9 @@ class BookControllerTest {
 
         assertEquals("No book(s) matches for given (partial) authors first- or lastname.", ResponseMessage);
     }
+
     @AfterEach
-    void cleanup(){
+    void cleanup() {
         RestAssured.reset();
     }
 }
