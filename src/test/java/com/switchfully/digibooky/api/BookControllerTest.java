@@ -6,6 +6,7 @@ import io.restassured.RestAssured;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.http.ContentType;
 import net.minidev.json.JSONObject;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -85,11 +86,11 @@ class BookControllerTest {
     void getBookByTitleWithRegex() {
         List<BookDto> result =
                 RestAssured.given().port(port)
-                        .when().get("/books?title=*Lord*")
+                        .when().get("/books?title=*Lord*Tower*")
                         .then().statusCode(200).and().extract().as(new TypeRef<List<BookDto>>() {
                         });
 
-        assertEquals("The Lord Of The Rings: The Return Of The King", result.get(0).title());
+        assertEquals("The Lord Of The Rings: The Two Towers", result.get(0).title());
     }
 
     @Test
@@ -196,7 +197,6 @@ class BookControllerTest {
         RestAssured.given().port(port).auth().preemptive().basic("2", "pwd")
                 .when().get("/books/1")
                 .then().assertThat().statusCode(404);
-
     }
 
     @Test
@@ -272,5 +272,9 @@ class BookControllerTest {
         String ResponseMessage = new JSONObject(response).get("message").toString();
 
         assertEquals("No book(s) matches for given (partial) authors first- or lastname.", ResponseMessage);
+    }
+    @AfterEach
+    void cleanup(){
+        RestAssured.reset();
     }
 }
