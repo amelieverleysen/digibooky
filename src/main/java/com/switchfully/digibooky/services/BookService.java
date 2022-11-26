@@ -6,14 +6,14 @@ import com.switchfully.digibooky.api.dtos.UpdateBookDto;
 import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.domain.LendInfoBook;
 import com.switchfully.digibooky.domain.LendItem;
-import com.switchfully.digibooky.domain.User;
 import com.switchfully.digibooky.domain.repositories.BookRepository;
 import com.switchfully.digibooky.domain.repositories.LendingRepository;
 import com.switchfully.digibooky.domain.repositories.UserRepository;
 import com.switchfully.digibooky.services.mappers.BookMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class BookService {
@@ -36,29 +36,20 @@ public class BookService {
     }
 
     public List<BookDto> getAllBooksWithLoanStatusAndLoaner() {
-        List<Book> books = bookRepository.getAllBooks();
-        List<BookDto> booksWithLoanInfo = new ArrayList<>();
-        for (Book book : books) {
-            LendInfoBook loaner = GetLoanerName(book);
-            booksWithLoanInfo.add(bookMapper.toDto(book, loaner));
-        }
-        return booksWithLoanInfo;
+        return bookRepository.getAllBooks().stream().map(book -> bookMapper.toDto(book, getLoanerName(book))).toList();
     }
 
-    private LendInfoBook GetLoanerName(Book book) {
-        Map<String, LendItem> lending = lendingRepository.getLendingMap();
-        LendInfoBook loaner = new LendInfoBook(String.valueOf(book.getIsLended()), "", "");
-        for (LendItem lendItem : lending.values()) {
-            if (lendItem.getItemId().equals(book.getId())) {
-                for (User user : userRepository.getAllUsers()) {
-                    if (user.getId().equals(lendItem.getMemberId())) {
-                        loaner.setFirstname(user.getSurname());
-                        loaner.setLastname(user.getName());
-                    }
-                }
-            }
+    private LendInfoBook getLoanerName(Book book) {
+        if (!book.getIsLended()) {
+            return new LendInfoBook(String.valueOf(book.getIsLended()), "", "");
         }
-        return loaner;
+        return userRepository.getAllUsers().stream().
+                filter(user -> user.getId().equals(lendingRepository.getLendingMap().values().stream()
+                        .filter(lendItem -> lendItem.getItemId().equals(book.getId()))
+                        .map((LendItem::getMemberId)).findFirst().orElseThrow()))
+                .findFirst()
+                .map(user -> new LendInfoBook(String.valueOf(book.getIsLended()), user.getSurname(), user.getName()))
+                .orElseThrow();
     }
 
     public BookDto getBookById(String id) throws NoSuchElementException {
