@@ -4,8 +4,10 @@ import com.switchfully.digibooky.domain.LendItem;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 public class LendingRepository {
@@ -25,6 +27,8 @@ public class LendingRepository {
         lendingMap.remove(lendItem.getId());
         return true;
     }
+
+    public List<LendItem> getAllLendItems() {return lendingMap.values().stream().collect(Collectors.toList());}
 
     public Optional<LendItem> getLendItemById(String returnId) {
         return Optional.ofNullable(lendingMap.get(returnId));

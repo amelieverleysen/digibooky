@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "lending")
 public class LendingController {
@@ -32,5 +34,12 @@ public class LendingController {
     public ReturnLibraryItemDto returnBook(@RequestParam String returnId, @RequestHeader String authorization){
         securityService.validateAuthorisation(authorization, Feature.LEND_ITEM);
         return lendingService.returnBook(returnId, authorization);
+    }
+
+    @GetMapping(path="{memberId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public List<LendItemDto> getLendItemsForMember(@PathVariable String memberId, @RequestHeader String authorization){
+        securityService.validateAuthorisation(authorization, Feature.LENDITEM_FOR_MEMBER);
+        return lendingService.getLendItemsForMember(memberId);
     }
 }

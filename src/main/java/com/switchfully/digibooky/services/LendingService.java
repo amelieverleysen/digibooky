@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.Base64;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -71,6 +72,13 @@ public class LendingService {
         String decodedToUsernameAndPassword = new String(Base64.getDecoder().decode(authorization.substring("Basic ".length())));
         String userId = decodedToUsernameAndPassword.split(":")[0];
         return userRepository.getUserById(userId).orElseThrow(() -> new NoSuchElementException("User not found"));
+    }
+
+    public List<LendItemDto> getLendItemsForMember(String memberId) {
+        return lendingMapper.toDTO(lendingRepository.getAllLendItems())
+                .stream()
+                .filter(lendItem -> memberId.equals(lendItem.memberId()))
+                .collect(Collectors.toList());
     }
 
 }
