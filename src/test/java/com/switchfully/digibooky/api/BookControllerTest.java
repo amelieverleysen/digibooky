@@ -15,8 +15,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -28,8 +27,7 @@ class BookControllerTest {
     int port;
 
     @Test
-    void getAllBooks() {
-
+    void getAllBooksAsUser() {
         List<BookDto> result =
                 RestAssured.given().port(port)
                         .when().get("/books")
@@ -37,10 +35,23 @@ class BookControllerTest {
                         });
 
         assertEquals(4, result.size());
+        assertNull(result.get(0).lendInfoBook());
     }
 
     @Test
-    void getBookById() {
+    void getAllBooksAsMember() {
+        List<BookDto> result =
+                RestAssured.given().port(port).auth().preemptive().basic("1", "pwd")
+                        .when().get("/books")
+                        .then().statusCode(200).and().extract().as(new TypeRef<List<BookDto>>() {
+                        });
+
+        assertEquals(4, result.size());
+        assertNotNull(result.get(0).lendInfoBook());
+    }
+
+    @Test
+    void getBookByIdAsUser() {
         BookDto result =
                 RestAssured.given().port(port)
                         .when().get("/books/1")
