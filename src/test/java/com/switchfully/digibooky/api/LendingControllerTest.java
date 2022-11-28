@@ -166,7 +166,7 @@ class LendingControllerTest {
         @Test
         void givenALibrarian_whenGetAllOverDueItems_thenResponsEquals() {
             bookRepository.createBook(bookTolend);
-            lendingRepository.save(new LendItem("lendId", bookTolend.getId(), testMemberId, LocalDate.of(2022, 06, 20)));
+            lendingRepository.save(new LendItem("lendId", bookTolend.getId(), "99", LocalDate.of(2022, 06, 20)));
             bookTolend.setIsLended(true);
 
             List<LendItemOverdueDto> result =
