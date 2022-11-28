@@ -43,13 +43,9 @@ public class BookService {
         if (!book.getIsLended()) {
             return new LendInfoBook(String.valueOf(book.getIsLended()), "", "");
         }
-        return userRepository.getAllUsers().stream().
-                filter(user -> user.getId().equals(lendingRepository.getLendingMap().values().stream()
-                        .filter(lendItem -> lendItem.getItemId().equals(book.getId()))
-                        .map((LendItem::getMemberId)).findFirst().orElseThrow()))
-                .findFirst()
-                .map(user -> new LendInfoBook(String.valueOf(book.getIsLended()), user.getSurname(), user.getName()))
-                .orElseThrow();
+        String memberId = lendingRepository.getAllLendItems().stream().filter(lendItem -> lendItem.getItemId().equals(book.getId())).findFirst().map(LendItem::getMemberId).orElseThrow(()-> new IllegalArgumentException("Database inconcistency"));
+        return userRepository.getAllUsers().stream().filter(user -> user.getId().equals(memberId)).findFirst().map(user -> new LendInfoBook(String.valueOf(book.getIsLended()), user.getSurname(), user.getName())).orElseThrow(()-> new IllegalArgumentException("Database inconcistency"));
+
     }
 
     public BookDto getBookById(String id) throws NoSuchElementException {
@@ -73,10 +69,10 @@ public class BookService {
     }
 
     public List<BookDto> searchBooksByTitle(String title) {
-        String regexTitle = convertStringToRegularExpression(title).toLowerCase();
+        String regexTitle = convertStringToRegularExpression(title);
 
         List<BookDto> booksForGivenTitle = bookMapper.toDto(bookRepository.getAllBooks().stream()
-                .filter(book -> (book.getTitle()).toLowerCase().matches(regexTitle))
+                .filter(book -> (book.getTitle()).matches(regexTitle))
                 .toList());
 
         if (booksForGivenTitle.isEmpty()) {
@@ -86,12 +82,12 @@ public class BookService {
     }
 
     public List<BookDto> searchBookByAuthor(String firstname, String lastname) throws NoSuchElementException {
-        String regexFirstname = convertStringToRegularExpression(firstname).toLowerCase();
-        String regexLastname = convertStringToRegularExpression(lastname).toLowerCase();
+        String regexFirstname = convertStringToRegularExpression(firstname);
+        String regexLastname = convertStringToRegularExpression(lastname);
 
         List<BookDto> booksForGivenAuthor = bookMapper.toDto(bookRepository.getAllBooks().stream()
-                .filter(book -> ((book.getAuthor()).getFirstname().toLowerCase().matches(regexFirstname))
-                        && (book.getAuthor()).getLastname().toLowerCase().matches(regexLastname))
+                .filter(book -> ((book.getAuthor()).getFirstname().matches(regexFirstname))
+                        && (book.getAuthor()).getLastname().matches(regexLastname))
                 .toList());
         if (booksForGivenAuthor.isEmpty()) {
             throw new NoSuchElementException("No book(s) matches for given (partial) authors first- or lastname.");
@@ -128,7 +124,7 @@ public class BookService {
     }
 
     private String convertStringToRegularExpression(String string) {
-        return string
+        return "(?i)" + string
                 .replace("*", ".*")
                 .replace("?", ".?");
     }

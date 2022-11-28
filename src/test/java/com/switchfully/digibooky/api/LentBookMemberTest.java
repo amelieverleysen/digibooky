@@ -26,6 +26,7 @@ public class LentBookMemberTest {
     @DisplayName("Tests regarding LendItem lists for members")
     @Nested
     class lentBooksMemberTest {
+        @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
         @Test
         void whenMemberLoansBook_LibrarianAsksLendItems_ReturnListWithLoanedBook(){
             Book testBook3 = new Book("testbook3", "a book for testing", "103", new Author("test", "McTest"));
@@ -40,7 +41,7 @@ public class LentBookMemberTest {
                     .when().get("lending/1")
                     .then().statusCode(200).extract().body().as(new TypeRef<List<LendItemDto>>() {
                     });
-            Assertions.assertEquals(result.get(2), testLendItem);
+            Assertions.assertTrue(result.contains(testLendItem));
         }
         @Test
         void whenMemberLoansNoBook_LibrarianAsksLendItems_ReturnEmptyList(){

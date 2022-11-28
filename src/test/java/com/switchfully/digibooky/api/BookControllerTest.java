@@ -30,7 +30,7 @@ class BookControllerTest {
     void getAllBooksAsUser() {
 
         RestAssured.given().port(port).auth().preemptive().basic("1", "pwd").log().all().contentType("application/json")
-                .with().queryParam("isbn", "9780151660346")
+                .with().queryParam("isbn", "9780395647401")
                 .when().post("lending/book").then().statusCode(201);
 
 
@@ -47,7 +47,7 @@ class BookControllerTest {
     @Test
     void getAllBooksAsMember() {
         RestAssured.given().port(port).auth().preemptive().basic("1", "pwd").log().all().contentType("application/json")
-                .with().queryParam("isbn", "9780151660346")
+                .with().queryParam("isbn", "9780395647401")
                 .when().post("lending/book").then().statusCode(201);
 
         List<BookDto> result =

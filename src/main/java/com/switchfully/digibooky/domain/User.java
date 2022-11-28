@@ -8,11 +8,11 @@ import java.util.UUID;
 
 public class User {
     private final String id;
-    private String name;
-    private String surname;
-    private String email;
-    private Role role;
-    private String password;
+    private final String name;
+    private final String surname;
+    private final String email;
+    private final Role role;
+    private final String password;
 
     public User(String name, String surname, String email, Role role, String password) {
         this.id = UUID.randomUUID().toString();

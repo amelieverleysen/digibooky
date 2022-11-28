@@ -2,22 +2,7 @@ package com.switchfully.digibooky.domain;
 
 import java.util.Objects;
 
-public class City {
-    private String postalCode;
-    private String cityName;
-
-    public City(String postalCode, String cityName) {
-        this.postalCode = postalCode;
-        this.cityName = cityName;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public String getCityName() {
-        return cityName;
-    }
+public record City(String postalCode, String cityName) {
 
     @Override
     public boolean equals(Object o) {
@@ -27,8 +12,4 @@ public class City {
         return Objects.equals(postalCode, city.postalCode) && Objects.equals(cityName, city.cityName);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(postalCode, cityName);
-    }
 }

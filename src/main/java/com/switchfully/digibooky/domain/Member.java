@@ -6,9 +6,9 @@ import java.util.Objects;
 
 public class Member extends User {
     private final String Inss;
-    private String street;
-    private String housenumber;
-    private City city;
+    private final String street;
+    private final String housenumber;
+    private final City city;
 
     public Member(String name, String surname, String email, Role role, String password, String INSS, String street, String housenumber, City city) {
         super(name, surname, email, role, password);
