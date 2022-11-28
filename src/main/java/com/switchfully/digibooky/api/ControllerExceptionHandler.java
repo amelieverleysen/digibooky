@@ -34,18 +34,18 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(UnauthorizedException.class)
-    protected void noSuchElementException(UnauthorizedException ex, HttpServletResponse response) throws IOException {
+    protected void unauthorizedException(UnauthorizedException ex, HttpServletResponse response) throws IOException {
 
         response.sendError(HttpStatus.FORBIDDEN.value(), ex.getMessage());
     }
     @ExceptionHandler(UnknownUserException.class)
-    protected void noSuchElementException(UnknownUserException ex, HttpServletResponse response) throws IOException {
+    protected void unknownUserException(UnknownUserException ex, HttpServletResponse response) throws IOException {
 
         response.sendError(HttpStatus.FORBIDDEN.value(), ex.getMessage());
     }
 
     @ExceptionHandler(WrongPasswordException.class)
-    protected void noSuchElementException(WrongPasswordException ex, HttpServletResponse response) throws IOException {
+    protected void wrongPasswordException(WrongPasswordException ex, HttpServletResponse response) throws IOException {
 
         response.sendError(HttpStatus.FORBIDDEN.value(), ex.getMessage());
     }

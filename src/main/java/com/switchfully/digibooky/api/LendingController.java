@@ -1,6 +1,7 @@
 package com.switchfully.digibooky.api;
 
 import com.switchfully.digibooky.api.dtos.LendItemDto;
+import com.switchfully.digibooky.api.dtos.LendItemOverdueDto;
 import com.switchfully.digibooky.api.dtos.ReturnLibraryItemDto;
 import com.switchfully.digibooky.domain.security.Feature;
 import com.switchfully.digibooky.services.LendingService;
@@ -41,5 +42,12 @@ public class LendingController {
     public List<LendItemDto> getLendItemsForMember(@PathVariable String memberId, @RequestHeader String authorization){
         securityService.validateAuthorisation(authorization, Feature.LENDITEM_FOR_MEMBER);
         return lendingService.getLendItemsForMember(memberId);
+    }
+
+    @GetMapping(path = "overdue", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public List<LendItemOverdueDto> getAllOverdueItems(@RequestHeader String authorization){
+        securityService.validateAuthorisation(authorization, Feature.GET_ALL_OVERDUE);
+        return lendingService.getAllOverdueItems();
     }
 }

@@ -1,16 +1,13 @@
 package com.switchfully.digibooky.api;
 
 import com.switchfully.digibooky.api.dtos.LendItemDto;
+import com.switchfully.digibooky.api.dtos.LendItemOverdueDto;
 import com.switchfully.digibooky.api.dtos.ReturnLibraryItemDto;
 import com.switchfully.digibooky.domain.Author;
 import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.domain.LendItem;
-import com.switchfully.digibooky.domain.*;
 import com.switchfully.digibooky.domain.repositories.BookRepository;
 import com.switchfully.digibooky.domain.repositories.LendingRepository;
-import com.switchfully.digibooky.domain.repositories.LendingRepository;
-import com.switchfully.digibooky.domain.repositories.UserRepository;
-import com.switchfully.digibooky.domain.security.Role;
 import io.restassured.RestAssured;
 import io.restassured.common.mapper.TypeRef;
 import net.minidev.json.JSONObject;
@@ -24,7 +21,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 class LendingControllerTest {
@@ -54,7 +51,7 @@ class LendingControllerTest {
     @Test
     void givenAnAuthorizedUser_whenLendingABook_thenBookIdEquals() {
         LendItemDto result =
-                RestAssured.given().port(port).auth().preemptive().basic("1", "pwd").log().all().contentType("application/json")
+                RestAssured.given().port(port).auth().preemptive().basic(testMemberId, testMemberPw).log().all().contentType("application/json")
                         .with().queryParam("isbn", "100")
                         .when().post("lending/book")
                         .then().statusCode(201).and().extract().body().as(LendItemDto.class);
@@ -68,7 +65,7 @@ class LendingControllerTest {
         @Test
         void givenAUnKnownUser_whenLendingABook_thenThrowsUnknownUserException() {
             Map<String, String> response =
-                    RestAssured.given().port(port).auth().preemptive().basic("0", "pwd").log().all().contentType("application/json")
+                    RestAssured.given().port(port).auth().preemptive().basic("0", testMemberPw).log().all().contentType("application/json")
                             .with().queryParam("isbn", "100")
                             .when().post("lending/book")
                             .then().statusCode(403).and().extract().body().as(new TypeRef<Map<String, String>>() {
@@ -81,7 +78,7 @@ class LendingControllerTest {
         @Test
         void givenAWrongPassword_whenLendingABook_thenThrowsUnknownUserException() {
             Map<String, String> response =
-                    RestAssured.given().port(port).auth().preemptive().basic("1", "x").log().all().contentType("application/json")
+                    RestAssured.given().port(port).auth().preemptive().basic(testMemberId, "x").log().all().contentType("application/json")
                             .with().queryParam("isbn", "100")
                             .when().post("lending/book")
                             .then().statusCode(403).and().extract().body().as(new TypeRef<Map<String, String>>() {
@@ -120,7 +117,7 @@ class LendingControllerTest {
             bookTolend.setIsLended(true);
 
             Map<String, String> result =
-                    RestAssured.given().port(port).auth().preemptive().basic("1", "pwd").log().all().contentType("application/json")
+                    RestAssured.given().port(port).auth().preemptive().basic(testMemberId, testMemberPw).log().all().contentType("application/json")
                             .with().queryParam("returnId", "lendId")
                             .when().post("lending/book")
                             .then().statusCode(200).and().extract().
@@ -134,7 +131,7 @@ class LendingControllerTest {
         @Test
         void givenAnUnknownLoan_whenReturningAnUnknownId_thenResponseMessage() {
             Map<String, String> result =
-                    RestAssured.given().port(port).auth().preemptive().basic("1", "pwd").log().all().contentType("application/json")
+                    RestAssured.given().port(port).auth().preemptive().basic(testMemberId, testMemberPw).log().all().contentType("application/json")
                             .with().queryParam("returnId", "x")
                             .when().post("lending/book")
                             .then().statusCode(404).and().extract().
@@ -151,7 +148,7 @@ class LendingControllerTest {
             bookTolend.setIsLended(true);
 
             Map<String, String> result =
-                    RestAssured.given().port(port).auth().preemptive().basic("4", "pwd").log().all().contentType("application/json")
+                    RestAssured.given().port(port).auth().preemptive().basic("4", testMemberPw).log().all().contentType("application/json")
                             .with().queryParam("returnId", "lendId")
                             .when().post("lending/book")
                             .then().statusCode(400).and().extract()
@@ -162,6 +159,27 @@ class LendingControllerTest {
             assertEquals("Unauthorized", ResponseMessage);
         }
     }
+
+    @DisplayName("Overdue")
+    @Nested
+    class Overdue{
+        @Test
+        void givenALibrarian_whenGetAllOverDueItems_thenResponsEquals() {
+            bookRepository.createBook(bookTolend);
+            lendingRepository.save(new LendItem("lendId", bookTolend.getId(), testMemberId, LocalDate.of(2022, 06, 20)));
+            bookTolend.setIsLended(true);
+
+            List<LendItemOverdueDto> result =
+                    RestAssured.given().port(port).auth().preemptive().basic("2", testMemberPw)
+                            .when().get("/lending/overdue")
+                            .then().statusCode(200).and().extract().as(new TypeRef<List<LendItemOverdueDto>>() {
+                            });
+
+            assertEquals(2, result.size());
+            assertEquals(bookTolend.getTitle(), result.get(1).title());
+        }
+    }
+
     @AfterEach
     void cleanup(){
         RestAssured.reset();

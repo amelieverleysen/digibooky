@@ -1,6 +1,7 @@
 package com.switchfully.digibooky.services;
 
 import com.switchfully.digibooky.api.dtos.LendItemDto;
+import com.switchfully.digibooky.api.dtos.LendItemOverdueDto;
 import com.switchfully.digibooky.api.dtos.ReturnLibraryItemDto;
 import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.domain.LendItem;
@@ -12,6 +13,7 @@ import com.switchfully.digibooky.services.mappers.LendingMapper;
 import com.switchfully.digibooky.services.mappers.ReturnItemMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Base64;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -81,4 +83,10 @@ public class LendingService {
                 .collect(Collectors.toList());
     }
 
+    public List<LendItemOverdueDto> getAllOverdueItems() throws RuntimeException {
+        List<LendItem> overdueLendItems = lendingRepository.getAllLendItems().stream().filter(lendItem -> LocalDate.now().isAfter(lendItem.getDueDate())).toList();
+        return overdueLendItems.stream()
+                .map(lendItem -> lendingMapper.toDTO(lendItem, bookRepository.getBookById(lendItem.getItemId()).orElseThrow(()-> new RuntimeException("Database inconsistency"))))
+                .collect(Collectors.toList());
+    }
 }

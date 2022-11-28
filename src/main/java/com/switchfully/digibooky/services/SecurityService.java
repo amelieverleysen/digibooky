@@ -44,6 +44,7 @@ public class SecurityService {
             String password = decodedToUsernameAndPassword.split(":")[1];
             return new UsernamePassword(username, password);
         }catch (RuntimeException ex){
+            logger.info("Missing authorization value in header.");
             throw new UnauthorizedException();
         }
     }
